@@ -27,3 +27,5 @@ jobs:
             git reset --hard origin/main
             git clean -fd
             echo "Git 최신화 완료"
+            sudo chown -R seopia:www-data /mnt/ssd/www/TeamWebSite
+            echo "폴더 소유자 변경 완료"
