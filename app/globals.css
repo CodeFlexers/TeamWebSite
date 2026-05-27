@@ -64,6 +64,12 @@
   --sidebar-accent-foreground: var(--green-800);
   --sidebar-border: var(--green-200);
   --sidebar-ring: var(--green-400);
+  
+  /* Icon Colors */
+  --icon-primary: var(--green-700);
+  --icon-secondary: var(--green-600);
+  --icon-accent: var(--mint);
+  --icon-accent-secondary: var(--teal);
 }
 
 .dark {
@@ -99,6 +105,12 @@
   --sidebar-accent-foreground: var(--slate-100);
   --sidebar-border: var(--slate-700);
   --sidebar-ring: var(--green-500);
+  
+  /* Icon Colors */
+  --icon-primary: var(--green-300);
+  --icon-secondary: var(--green-400);
+  --icon-accent: var(--mint);
+  --icon-accent-secondary: var(--teal);
 }
 
 @theme inline {
