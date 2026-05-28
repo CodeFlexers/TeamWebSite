@@ -10,7 +10,7 @@ const teamMembers = [
     name: "정지섭",
     role: "AI, Backend, Frontend, DB, Deploy",
     bio: "여러 분야에서 프로젝트 경험이 풍부하고 알고 싶은게 많은 개발자입니다.",
-    skills: ["PyTorch","TensorFlow","LangChain","CV", "FastAPI", "SpringBoot","JPA", "NoSQL", "RDBMS", "CI/CD","React", "TypeScript", "Next.js", "Docker", "AWS"],
+    skills: ["PyTorch", "TensorFlow", "LangChain", "CV", "FastAPI", "SpringBoot", "JPA", "NoSQL", "RDBMS", "CI/CD", "React", "TypeScript", "Next.js", "Docker", "AWS"],
     gradient: "from-[var(--green-400)] to-[var(--teal)]",
     avatar: "JS",
   },
@@ -19,7 +19,7 @@ const teamMembers = [
     name: "이창호",
     role: "(예시) Backend Developer",
     bio: "(예시) 안정적이고 확장 가능한 서버 아키텍처를 설계합니다.",
-    skills: ["( 예시 )","Node.js", "Python", "PostgreSQL"],
+    skills: ["( 예시 )", "Node.js", "Python", "PostgreSQL"],
     gradient: "from-[var(--teal)] to-[var(--mint)]",
     avatar: "CH",
   },
@@ -28,7 +28,7 @@ const teamMembers = [
     name: "차윤하",
     role: "(예시) Full Stack Developer",
     bio: "(예시) 프론트엔드부터 백엔드까지 전 영역을 다루는 풀스택 개발자입니다.",
-    skills: ["( 예시 )","Vue.js", "Go", "Docker"],
+    skills: ["( 예시 )", "Vue.js", "Go", "Docker"],
     gradient: "from-[var(--mint)] to-[var(--green-300)]",
     avatar: "YH",
   },
@@ -42,7 +42,7 @@ const containerVariants = {
       staggerChildren: 0.1,
     },
   },
-};
+} as const;
 
 const cardVariants = {
   hidden: { opacity: 0, y: 50, scale: 0.95 },
@@ -55,7 +55,7 @@ const cardVariants = {
       ease: "easeOut",
     },
   },
-};
+} as const;
 
 export default function TeamSection() {
   const ref = useRef(null);
@@ -97,13 +97,13 @@ export default function TeamSection() {
                 >
                   {/* Background Gradient on Hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${member.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-                  
+
                   {/* Avatar */}
                   <div className="relative z-10 flex flex-col items-center">
                     <div className={`w-24 h-24 rounded-2xl bg-gradient-to-br ${member.gradient} flex items-center justify-center text-white text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                       {member.avatar}
                     </div>
-                    
+
                     {/* Name & Role */}
                     <h3 className="mt-6 text-xl font-bold text-[var(--slate-900)] dark:text-white group-hover:text-[var(--green-600)] dark:group-hover:text-[var(--green-400)] transition-colors">
                       {member.name}
@@ -111,12 +111,12 @@ export default function TeamSection() {
                     <p className="text-[var(--green-600)] dark:text-[var(--green-400)] font-medium text-sm mt-1">
                       {member.role}
                     </p>
-                    
+
                     {/* Bio */}
                     <p className="text-[var(--slate-500)] dark:text-[var(--slate-400)] text-center mt-4 text-sm leading-relaxed">
                       {member.bio}
                     </p>
-                    
+
                     {/* Skills */}
                     <div className="flex flex-wrap justify-center gap-2 mt-5">
                       {member.skills.map((skill, skillIndex) => (
@@ -128,7 +128,7 @@ export default function TeamSection() {
                         </span>
                       ))}
                     </div>
-                    
+
                     {/* View Portfolio Link */}
                     <div className="mt-6 flex items-center gap-2 text-[var(--green-500)] font-medium text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <span>포트폴리오 보기</span>

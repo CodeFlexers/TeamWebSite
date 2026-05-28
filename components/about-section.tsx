@@ -50,7 +50,7 @@ const containerVariants = {
       staggerChildren: 0.15,
     },
   },
-};
+} as const;
 
 const itemVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -62,7 +62,7 @@ const itemVariants = {
       ease: "easeOut",
     },
   },
-};
+} as const;
 
 export default function AboutSection() {
   const ref = useRef(null);
@@ -72,7 +72,7 @@ export default function AboutSection() {
     <section ref={ref} className="py-24 md:py-32 bg-white dark:bg-[var(--slate-900)] relative overflow-hidden">
       {/* Background Decoration */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[var(--green-50)] dark:from-[var(--green-900)]/20 to-transparent opacity-50" />
-      
+
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           variants={containerVariants}
@@ -91,13 +91,13 @@ export default function AboutSection() {
               입니다
             </h2>
             <p className="text-lg text-[var(--slate-600)] dark:text-[var(--slate-300)] max-w-3xl mx-auto leading-relaxed">
-              최신 기술 트렌드를 선도하며, 사용자 중심의 솔루션을 개발하는 열정적인 개발자 팀입니다. 
+              최신 기술 트렌드를 선도하며, 사용자 중심의 솔루션을 개발하는 열정적인 개발자 팀입니다.
               각자의 전문 분야에서 탁월한 역량을 발휘하며, 함께 성장하는 문화를 만들어가고 있습니다.
             </p>
           </motion.div>
 
           {/* Features Grid */}
-          <motion.div 
+          <motion.div
             variants={containerVariants}
             className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
           >
