@@ -1,347 +1,349 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  ArrowLeft, Github, ExternalLink, Map, Leaf,
-  Database, Server, Code, Sparkles, Navigation,
-  BarChart, Zap, CheckCircle2
-} from "lucide-react";
-
-// 공통 애니메이션 속성
-const fadeInUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-} as const;
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.15 }
-  }
-} as const;
-
-const hoverCard = {
-  hover: { y: -5, transition: { duration: 0.2 } }
-} as const;
+import { motion, useScroll, useTransform } from "framer-motion";
+import { MoveRight, Code2, Server, Database, Globe, Network, MapPin, Zap, CheckCircle2 } from "lucide-react";
 
 export default function ChaYunhaPortfolio() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // 패럴랙스 스크롤을 위한 설정
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
+  // Track 1: Hero Section (Travel Shoot & Jupging)
+  const heroTrackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroTrackRef,
+    // 요소의 top이 뷰포트 top에 닿을 때 0, 요소의 bottom이 뷰포트 bottom에 닿을 때 1
+    offset: ["start start", "end end"],
   });
 
-  const heroY = useTransform(scrollYProgress, [0, 0.2], [0, -100]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  // Track 2: Horizontal Scroll Section
+  const horizontalTrackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress: horizontalProgress } = useScroll({
+    target: horizontalTrackRef,
+    offset: ["start start", "end end"],
+  });
+
+  /*
+    ===== Hero Track 모션 설정 =====
+    heroProgress: 0.0 ~ 1.0
+  */
+  // Hero 1 (Travel Shoot)
+  // 0~0.3 유지, 0.3~0.45 사라짐 (이후 완전 투명 및 display: none)
+  const hero1Opacity = useTransform(heroProgress, [0, 0.3, 0.45], [1, 1, 0]);
+  const hero1Y = useTransform(heroProgress, [0.3, 0.45], ["0%", "-10%"]); // 위로 사라짐
+  const hero1Pointer = useTransform(heroProgress, (v) => v < 0.4 ? "auto" : "none");
+  const hero1Display = useTransform(heroProgress, (v) => v < 0.45 ? "flex" : "none");
+  const pathLength1 = useTransform(heroProgress, [0, 0.3], [0, 1]);
+
+  // Hero 2 (Jupging)
+  // 0.45~0.6 등장, 0.6~0.9 유지
+  const hero2Opacity = useTransform(heroProgress, [0.45, 0.6, 0.9], [0, 1, 1]);
+  const hero2Y = useTransform(heroProgress, [0.45, 0.6], ["10%", "0%"]); // 아래에서 올라옴
+  const hero2Pointer = useTransform(heroProgress, (v) => v > 0.45 ? "auto" : "none");
+  const hero2Display = useTransform(heroProgress, (v) => v >= 0.45 ? "flex" : "none");
+  const pathLength2 = useTransform(heroProgress, [0.45, 0.6], [0, 1]);
+  
+  // Background Map
+  const mapScale = useTransform(heroProgress, [0, 1], [1, 1.15]);
+  const mapY = useTransform(heroProgress, [0, 1], ["0%", "5%"]);
+
+  /*
+    ===== Horizontal Track 모션 설정 =====
+    horizontalProgress: 0.0 ~ 1.0
+  */
+  // 가로 스크롤 이동
+  const xTranslation = useTransform(horizontalProgress, [0, 1], ["0%", "-50%"]);
 
   return (
-    <div ref={containerRef} className="min-h-screen bg-background text-foreground overflow-hidden selection:bg-[var(--green-500)] selection:text-white">
-      {/* Background Ambience */}
-      <div className="fixed inset-0 pointer-events-none -z-10">
-        <div className="absolute top-0 right-[-10%] w-[50vw] h-[50vw] bg-gradient-to-br from-[var(--green-400)]/10 to-transparent rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-screen" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[60vw] h-[60vw] bg-gradient-to-tr from-[var(--teal)]/10 to-transparent rounded-full blur-3xl opacity-50 mix-blend-multiply dark:mix-blend-screen" />
+    <div className="bg-background text-foreground transition-colors duration-300">
+      
+      {/* 
+        =========================================
+        TRACK 1: HERO MAP AREA (Section 1 & 2)
+        =========================================
+      */}
+      <div ref={heroTrackRef} className="h-[250vh] relative z-10">
+        <div className="sticky top-0 h-screen w-full overflow-hidden bg-zinc-50 dark:bg-zinc-950 flex flex-col justify-center shadow-2xl">
+          
+          {/* Background Map & Grid Vector */}
+          <motion.div 
+            className="absolute inset-0 z-0 flex items-center justify-center opacity-30 dark:opacity-20 pointer-events-none"
+            style={{ scale: mapScale, y: mapY }}
+          >
+            <svg viewBox="0 0 1200 600" className="w-full h-full object-cover">
+              <defs>
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" className="stroke-slate-300 dark:stroke-slate-700" strokeWidth="0.5" />
+                </pattern>
+              </defs>
+              <rect width="1200" height="600" fill="url(#grid)" />
+              <path d="M 150 100 C 200 80, 250 120, 260 150 C 270 180, 230 220, 260 250 C 280 270, 310 320, 300 380 C 290 420, 250 480, 240 500 C 220 480, 230 420, 240 380 C 230 350, 180 300, 170 280 C 150 240, 140 220, 120 180 C 100 120, 120 100, 150 100 Z" className="fill-slate-200 stroke-slate-400 dark:fill-slate-800 dark:stroke-slate-600" strokeWidth="2" />
+              <path d="M 550 80 C 700 50, 850 60, 950 100 C 1000 130, 980 180, 950 200 C 930 230, 950 280, 920 300 C 900 320, 850 350, 820 320 C 800 290, 780 260, 750 280 C 730 320, 750 380, 720 450 C 700 480, 650 500, 640 450 C 620 380, 600 350, 580 320 C 530 280, 510 250, 500 200 C 480 150, 500 100, 550 80 Z" className="fill-slate-200 stroke-slate-400 dark:fill-slate-800 dark:stroke-slate-600" strokeWidth="2" />
+              <path d="M 980 400 C 1050 380, 1100 420, 1080 460 C 1060 480, 980 490, 960 450 C 940 420, 950 400, 980 400 Z" className="fill-slate-200 stroke-slate-400 dark:fill-slate-800 dark:stroke-slate-600" strokeWidth="2" />
+            </svg>
+          </motion.div>
+
+          {/* === HERO 1: Travel Shoot === */}
+          <motion.div 
+            style={{ opacity: hero1Opacity, y: hero1Y, pointerEvents: hero1Pointer as any, display: hero1Display as any }}
+            className="absolute top-0 left-0 w-full h-full flex-col justify-center items-center z-10"
+          >
+            <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
+              <svg viewBox="0 0 1200 600" className="w-full h-full object-cover">
+                <motion.path d="M 900 180 Q 750 50 600 120 T 450 150 Q 300 80 200 160" fill="none" className="stroke-blue-500 dark:stroke-blue-400" strokeWidth="4" strokeLinecap="round" strokeDasharray="1 10" style={{ pathLength: pathLength1 }} />
+                <circle cx="900" cy="180" r="8" className="fill-blue-600 dark:fill-blue-400" />
+                <circle cx="900" cy="180" r="16" className="fill-blue-500/30 dark:fill-blue-400/30 animate-ping" />
+                <text x="920" y="185" className="text-sm fill-slate-700 dark:fill-slate-300 font-bold">SEOUL (HQ)</text>
+                <circle cx="600" cy="120" r="6" className="fill-blue-600 dark:fill-blue-400" />
+                <text x="615" y="115" className="text-xs fill-slate-600 dark:fill-slate-400">PARIS</text>
+                <circle cx="200" cy="160" r="8" className="fill-blue-600 dark:fill-blue-400" />
+                <circle cx="200" cy="160" r="16" className="fill-blue-500/30 dark:fill-blue-400/30 animate-ping" />
+                <text x="140" y="165" className="text-xs fill-slate-600 dark:fill-slate-400">NEW YORK</text>
+              </svg>
+            </div>
+            <div className="max-w-7xl mx-auto px-6 w-full flex flex-col md:flex-row items-center justify-between gap-12 mt-32 md:mt-0 pointer-events-auto">
+              <div className="flex-1 space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/40 border border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300 text-sm font-medium">
+                  <Globe className="w-4 h-4" /> Global Reach
+                </div>
+                <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 dark:text-white">Travel Shoot</h1>
+                <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
+                  끊김 없는 여행을 위한 AI 기반 원스톱 숙박 예약 및 플래닝 서비스. 전 세계를 하나로 연결하는 글로벌 네트워크 아키텍처.
+                </p>
+                <div className="flex items-center gap-8 pt-8">
+                  <div>
+                    <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">95%</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">AI Recommendation Match</p>
+                  </div>
+                  <div className="w-px h-12 bg-slate-300 dark:bg-slate-700"></div>
+                  <div>
+                    <p className="text-4xl font-bold text-blue-600 dark:text-blue-400">13w</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Development Sprints</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-1 w-full max-w-md bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-2xl">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center">
+                      <Server className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-slate-900 dark:text-white">Backend Architecture</h3>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">Spring Boot & Cloud Native</p>
+                    </div>
+                  </div>
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
+                      <p className="text-sm text-slate-600 dark:text-slate-300">Swagger API 표준화 및 예외 처리 고도화</p>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
+                      <p className="text-sm text-slate-600 dark:text-slate-300">필터링 API 조건부 인덱싱을 통한 성능 40% 향상</p>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" />
+                      <p className="text-sm text-slate-600 dark:text-slate-300">GitHub Actions CI/CD 자동화 파이프라인 구축</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* === HERO 2: Jupging === */}
+          <motion.div 
+            style={{ opacity: hero2Opacity, y: hero2Y, pointerEvents: hero2Pointer as any, display: hero2Display as any }}
+            className="absolute top-0 left-0 w-full h-full flex-col justify-center items-center z-10"
+          >
+            <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none">
+              <svg viewBox="0 0 1200 600" className="w-full h-full object-cover">
+                <motion.path d="M 400 450 L 450 400 L 430 350 L 500 300 C 550 250, 600 350, 650 300 L 700 250 L 750 280 L 800 200" fill="none" className="stroke-green-500 dark:stroke-green-400" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" style={{ pathLength: pathLength2 }} />
+                <circle cx="400" cy="450" r="6" className="fill-green-600 dark:fill-green-400" />
+                <text x="360" y="470" className="text-xs fill-slate-600 dark:fill-slate-400 font-medium">Start: Han River</text>
+                <rect x="495" y="295" width="10" height="10" rx="2" className="fill-emerald-500 dark:fill-emerald-400" />
+                <rect x="645" y="295" width="10" height="10" rx="2" className="fill-emerald-500 dark:fill-emerald-400" />
+                <circle cx="800" cy="200" r="8" className="fill-green-600 dark:fill-green-400" />
+                <circle cx="800" cy="200" r="16" className="fill-green-500/30 dark:fill-green-400/30 animate-ping" />
+                <text x="820" y="205" className="text-sm fill-slate-700 dark:fill-slate-300 font-bold">Eco Node (Goal)</text>
+              </svg>
+            </div>
+            <div className="max-w-7xl mx-auto px-6 w-full flex flex-col-reverse md:flex-row items-center justify-between gap-12 mt-32 md:mt-0 pointer-events-auto">
+              <div className="flex-1 w-full max-w-md bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-2xl p-8 shadow-2xl">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <div className="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
+                      <Database className="w-6 h-6 text-green-600 dark:text-green-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-slate-900 dark:text-white">Data Infrastructure</h3>
+                      <p className="text-sm text-slate-500 dark:text-slate-400">YOLOv5 & Oracle DB</p>
+                    </div>
+                  </div>
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
+                      <p className="text-sm text-slate-600 dark:text-slate-300">YOLOv5 모델 훈련 최적화 (mAP50 0.95 달성)</p>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
+                      <p className="text-sm text-slate-600 dark:text-slate-300">MyBatis 기반 Oracle 데이터베이스 설계 및 쿼리 튜닝</p>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle2 className="w-5 h-5 text-green-500 mt-0.5 shrink-0" />
+                      <p className="text-sm text-slate-600 dark:text-slate-300">실시간 GPS 좌표와 쓰레기 인식 로그 동기화 처리</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div className="flex-1 space-y-6 md:text-right">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-100 dark:bg-green-900/40 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300 text-sm font-medium md:ml-auto">
+                  <MapPin className="w-4 h-4" /> Eco-tracking
+                </div>
+                <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-900 dark:text-white">Jupging</h1>
+                <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed md:ml-auto">
+                  건강과 지구를 동시에 지키는 플로깅 트래커. 인공지능 영상 인식으로 쓰레기 수거를 자동 기록합니다.
+                </p>
+                <div className="flex items-center gap-8 pt-8 md:justify-end">
+                  <div className="text-right">
+                    <p className="text-4xl font-bold text-green-600 dark:text-green-400">YOLO</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Vision Detection AI</p>
+                  </div>
+                  <div className="w-px h-12 bg-slate-300 dark:bg-slate-700"></div>
+                  <div className="text-right">
+                    <p className="text-4xl font-bold text-green-600 dark:text-green-400">Spring</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Legacy to Modern API</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 w-full z-50 p-6 backdrop-blur-md bg-background/50 border-b border-border/40">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group">
-            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            <span className="font-semibold text-sm">돌아가기</span>
-          </Link>
-          <div className="text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r from-[var(--green-500)] to-[var(--teal)]">
-            CHA YUNHA
-          </div>
-        </div>
-      </nav>
-
-      <main className="pt-32 pb-24 space-y-32">
-        {/* --- Hero Section --- */}
-        <motion.section
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="max-w-7xl mx-auto px-6 pt-12 md:pt-24 flex flex-col items-center text-center"
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--green-100)] dark:bg-[var(--green-900)]/30 border border-[var(--green-200)] dark:border-[var(--green-800)]/50 mb-8"
+      {/* 
+        =========================================
+        TRACK 2: SECTION 3 (Horizontal Scroll)
+        =========================================
+      */}
+      <div ref={horizontalTrackRef} className="h-[200vh] relative z-20 bg-background">
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
+          <motion.div 
+            style={{ x: xTranslation }} 
+            className="flex w-[200vw] h-full items-center shrink-0"
           >
-            <Sparkles size={16} className="text-[var(--green-600)] dark:text-[var(--green-400)]" />
-            <span className="text-sm font-semibold text-[var(--green-700)] dark:text-[var(--green-300)]">
-              Full Stack Developer
-            </span>
-          </motion.div>
-
-          <motion.h1
-            className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-tight mb-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            끊임없이 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--green-500)] to-[var(--teal)]">성장</span>하고<br />
-            경험을 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--teal)] to-[var(--mint)]">연결</span>합니다.
-          </motion.h1>
-
-          <motion.p
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            프론트엔드부터 백엔드까지 전 영역을 아우르며, 데이터베이스 최적화와 AI 연동을 통해 사용자 중심의 완성도 높은 서비스를 만듭니다.
-          </motion.p>
-        </motion.section>
-
-
-        {/* --- Project 1: Travel Shoot --- */}
-        <section className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="flex flex-col gap-12"
-          >
-            {/* Project Header */}
-            <motion.div variants={fadeInUp} className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-border/50">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="text-2xl">✈️</span>
-                  <h2 className="text-3xl md:text-5xl font-bold">Travel Shoot</h2>
-                </div>
-                <p className="text-xl font-medium text-muted-foreground">AI 기반 원스톱 숙박 예약 서비스</p>
-              </div>
-              <div className="flex items-center gap-3">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-muted hover:bg-[var(--green-100)] dark:hover:bg-[var(--green-900)]/50 hover:text-[var(--green-600)] transition-colors">
-                  <Github size={20} />
-                </a>
-                <a href="https://travelshoot.store" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-5 py-3 rounded-full bg-[var(--slate-900)] dark:bg-white text-white dark:text-[var(--slate-900)] font-semibold hover:opacity-90 transition-opacity">
-                  <span>서비스 방문</span>
-                  <ExternalLink size={18} />
-                </a>
-              </div>
-            </motion.div>
-
-            {/* Bento Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(180px,auto)]">
-              {/* Main Image Card (Span 2) */}
-              <motion.div
-                variants={fadeInUp}
-                whileHover="hover"
-                className="md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden border border-border/50 bg-muted/30 group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
-                <div className="relative w-full h-full min-h-[360px]">
-                  {/* 임시 이미지 (배경으로 활용) */}
-                  <Image
-                    src="https://github.com/user-attachments/assets/4d92168a-3461-47bd-9335-f6f72e57e0b9"
-                    alt="Travel Shoot Main"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
-                    unoptimized
-                  />
-                </div>
-                <div className="absolute bottom-0 left-0 p-8 z-20 text-white">
-                  <h3 className="text-2xl font-bold mb-2">끊김 없는 여행의 시작</h3>
-                  <p className="text-white/80 max-w-md line-clamp-2">숙소 예약부터 맞춤형 코스 생성, AI 리뷰 요약까지 하나의 플랫폼에서 해결하는 혁신적인 여행 솔루션입니다.</p>
-                </div>
-              </motion.div>
-
-              {/* Role & Tech Card */}
-              <motion.div
-                variants={fadeInUp}
-                className="rounded-3xl p-8 border border-border/50 bg-gradient-to-br from-card to-muted/20 flex flex-col justify-center shadow-sm"
-              >
-                <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">My Role</h4>
-                <div className="flex items-start gap-3 mb-6">
-                  <Database className="text-[var(--green-500)] mt-1 shrink-0" size={24} />
+            {/* SLIDE 1 */}
+            <div className="w-screen h-full flex-shrink-0 flex items-center justify-center p-6 md:p-24 relative">
+              <div className="absolute inset-0 bg-blue-50/50 dark:bg-blue-950/20 -z-10"></div>
+              <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div className="space-y-8">
                   <div>
-                    <div className="font-bold text-lg">DB 설계 및 최적화</div>
-                    <div className="text-sm text-muted-foreground mt-1">Amazon S3 연동 및 효율적인 데이터 모델링</div>
+                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">API Gateway & Scalability</h2>
+                    <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                      Travel Shoot의 급격한 트래픽 증가에 대비하여, 프론트엔드와 여러 백엔드 마이크로서비스 간의 통신을 
+                      효율적으로 조율하기 위한 탄탄한 기반을 다졌습니다. Swagger를 통한 문서화로 프론트엔드 팀과의 
+                      협업 소요 시간을 대폭 줄였습니다.
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                      <Zap className="w-8 h-8 text-blue-500 mb-4" />
+                      <h4 className="font-semibold text-slate-900 dark:text-white">API 최적화</h4>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">응답 속도 40% 개선 (조건부 인덱싱)</p>
+                    </div>
+                    <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800">
+                      <Network className="w-8 h-8 text-blue-500 mb-4" />
+                      <h4 className="font-semibold text-slate-900 dark:text-white">CI/CD 파이프라인</h4>
+                      <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">무중단 배포 및 자동화된 테스트 환경 구축</p>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <Code className="text-[var(--teal)] mt-1 shrink-0" size={24} />
-                  <div>
-                    <div className="font-bold text-lg">Full Stack 개발</div>
-                    <div className="text-sm text-muted-foreground mt-1">리뷰 시스템 및 숙소 상세 서비스 풀스택 구현</div>
+                <div className="bg-slate-900 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500"></div>
+                  <div className="flex items-center gap-2 mb-6">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
                   </div>
+                  <pre className="text-sm text-blue-300 font-mono overflow-x-auto">
+                    <code>
+{`@RestController
+@RequestMapping("/api/v1/accommodations")
+public class AccommodationController {
+    
+    @Operation(summary = "숙박 시설 다중 필터 검색")
+    @GetMapping("/search")
+    public ResponseEntity<List<AccDto>> search(
+        @Valid SearchFilter filter
+    ) {
+        // Condition-based indexing applied
+        return ResponseEntity.ok(
+            accommodationService.findOptimized(filter)
+        );
+    }
+}`}
+                    </code>
+                  </pre>
                 </div>
-              </motion.div>
-
-              {/* AI Feature Card */}
-              <motion.div
-                variants={fadeInUp}
-                className="rounded-3xl p-8 border border-border/50 bg-gradient-to-br from-[var(--green-50)] to-[var(--mint)]/20 dark:from-[var(--slate-800)] dark:to-[var(--green-900)]/20 shadow-sm relative overflow-hidden"
-              >
-                <div className="absolute -right-4 -top-4 text-[var(--green-500)]/10">
-                  {/* <Sparkles size={120} /> */}
-                </div>
-                <h4 className="text-xl font-bold mb-3 relative z-10">GPT-5 AI 리뷰 요약</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed relative z-10 mb-6">
-                  사용자 리뷰를 분석하여 6가지 세부 별점과 장단점을 자동 추출합니다. JSON 강제 파싱으로 안정성을 확보했습니다.
-                </p>
-                <div className="flex flex-wrap gap-2 relative z-10">
-                  {['React 19', 'Spring Boot', 'MySQL', 'Redis', 'GPT-5'].map(tech => (
-                    <span key={tech} className="px-3 py-1 text-xs font-semibold rounded-full bg-background/80 backdrop-blur-sm border border-border">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
+              </div>
             </div>
 
-            {/* Achievement / Architecture List */}
-            <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[
-                { icon: Navigation, title: 'AI 여행 코스 생성', desc: 'Haversine 공식 및 GPT를 활용하여 거리 기반 최적의 동선 생성 (계획 시간 90% 단축)' },
-                { icon: BarChart, title: '동적 추천 시스템', desc: '4단계 사용자 분류 및 실시간 AI 스코어링을 통한 맞춤형 큐레이션' },
-                { icon: Zap, title: '성능 최적화', desc: '무한 스크롤, React Query 캐싱 및 다중 필터링을 통한 쾌적한 검색 환경' }
-              ].map((item, idx) => (
-                <div key={idx} className="flex gap-4 p-6 rounded-2xl bg-card border border-border/40 hover:border-[var(--green-300)]/50 transition-colors">
-                  <div className="w-12 h-12 rounded-full bg-[var(--green-50)] dark:bg-[var(--green-900)]/30 flex items-center justify-center shrink-0">
-                    <item.icon size={20} className="text-[var(--green-600)] dark:text-[var(--green-400)]" />
+            {/* SLIDE 2 */}
+            <div className="w-screen h-full flex-shrink-0 flex items-center justify-center p-6 md:p-24 relative">
+              <div className="absolute inset-0 bg-green-50/50 dark:bg-green-950/20 -z-10"></div>
+              <div className="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div className="order-2 lg:order-1 bg-white dark:bg-slate-900 rounded-3xl p-8 shadow-2xl border border-slate-100 dark:border-slate-800">
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <Code2 className="text-slate-400" />
+                        <span className="font-medium text-slate-700 dark:text-slate-300">YOLOv5 Engine</span>
+                      </div>
+                      <span className="text-xs bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 px-2 py-1 rounded-full">Python</span>
+                    </div>
+                    <div className="flex justify-center">
+                      <MoveRight className="text-slate-300 dark:text-slate-600 rotate-90 lg:rotate-0" />
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <Server className="text-blue-400" />
+                        <span className="font-medium text-slate-700 dark:text-slate-300">Spring Boot API</span>
+                      </div>
+                      <span className="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">Java</span>
+                    </div>
+                    <div className="flex justify-center">
+                      <MoveRight className="text-slate-300 dark:text-slate-600 rotate-90 lg:rotate-0" />
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
+                      <div className="flex items-center gap-3">
+                        <Database className="text-red-400" />
+                        <span className="font-medium text-slate-700 dark:text-slate-300">Oracle Database</span>
+                      </div>
+                      <span className="text-xs bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 px-2 py-1 rounded-full">SQL</span>
+                    </div>
                   </div>
+                </div>
+
+                <div className="order-1 lg:order-2 space-y-8">
                   <div>
-                    <h5 className="font-bold mb-2">{item.title}</h5>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">AI Integration & Data Pipeline</h2>
+                    <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed">
+                      모바일 기기에서 촬영된 영상 프레임에서 쓰레기 객체를 식별하고, 해당 GPS 좌표를 매핑하여 
+                      서버로 실시간 전송하는 데이터 파이프라인을 구축했습니다. AI 모델이 도출한 메타데이터를 
+                      관계형 DB(Oracle)에 안정적으로 적재하도록 구조를 설계했습니다.
+                    </p>
+                  </div>
+                  <div className="inline-flex flex-wrap gap-2">
+                    <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm">#YOLOv5</span>
+                    <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm">#ComputerVision</span>
+                    <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm">#OracleDB</span>
+                    <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-sm">#MyBatis</span>
                   </div>
                 </div>
-              ))}
-            </motion.div>
-          </motion.div>
-        </section>
-
-
-        {/* --- Divider --- */}
-        <div className="max-w-4xl mx-auto px-6 flex items-center justify-center">
-          <div className="h-px bg-gradient-to-r from-transparent via-border to-transparent w-full" />
-          <div className="w-3 h-3 rounded-full bg-[var(--green-500)]/20 border border-[var(--green-500)]/50 absolute" />
-        </div>
-
-
-        {/* --- Project 2: Jupging --- */}
-        <section className="max-w-7xl mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="flex flex-col gap-12"
-          >
-            {/* Project Header (Reverse Layout Feel) */}
-            <motion.div variants={fadeInUp} className="flex flex-col md:flex-row-reverse md:items-end justify-between gap-6 pb-6 border-b border-border/50 text-right">
-              <div className="text-left md:text-right">
-                <div className="flex items-center md:justify-end gap-3 mb-4">
-                  <h2 className="text-3xl md:text-5xl font-bold">Jupging</h2>
-                  <span className="text-2xl">🌏</span>
-                </div>
-                <p className="text-xl font-medium text-muted-foreground">환경 보호와 건강을 위한 플로깅 앱</p>
               </div>
-              <div className="flex items-center gap-3">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-muted hover:bg-[var(--teal)]/10 hover:text-[var(--teal)] transition-colors">
-                  <Github size={20} />
-                </a>
-              </div>
-            </motion.div>
-
-            {/* Bento Grid Reverse */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(180px,auto)]">
-
-              {/* Model & AI Card */}
-              <motion.div
-                variants={fadeInUp}
-                className="rounded-3xl p-8 border border-border/50 bg-gradient-to-br from-card to-[var(--teal)]/5 shadow-sm flex flex-col justify-between"
-              >
-                <div>
-                  <h4 className="text-sm font-bold text-[var(--teal)] uppercase tracking-wider mb-4">Core Technology</h4>
-                  <div className="text-2xl font-bold mb-4">YOLO V8 기반<br />쓰레기 객체 탐지</div>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                    12만장의 데이터를 학습하여 쓰레기 종류와 위치를 식별하고, 구글맵에 마커로 매핑하여 사용자에게 정확한 정보를 제공합니다.
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-                  <CheckCircle2 size={16} className="text-[var(--teal)]" />
-                  mAP50 0.95 달성
-                </div>
-              </motion.div>
-
-              {/* Main Image Card (Span 2) */}
-              <motion.div
-                variants={fadeInUp}
-                whileHover="hover"
-                className="md:col-span-2 md:row-span-2 relative rounded-3xl overflow-hidden border border-border/50 bg-muted/30 group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-[#003a25]/80 via-transparent to-transparent z-10" />
-                <div className="relative w-full h-full min-h-[360px] flex items-center justify-center p-8">
-                  {/* 임시 모바일 프레임 느낌 적용 */}
-                  <Image
-                    src=""
-                    alt="Jupging Architecture & Screen"
-                    fill
-                    className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out"
-                    unoptimized
-                  />
-                </div>
-                <div className="absolute bottom-0 left-0 p-8 z-20 text-white">
-                  <h3 className="text-2xl font-bold mb-2">나와 지구가 함께 건강해지는 시간</h3>
-                  <p className="text-white/80 max-w-md line-clamp-2">GPS 트래킹을 통한 경로 기록, 맞춤형 산책로 추천 및 환경 오염 요소 맵핑.</p>
-                </div>
-              </motion.div>
-
-              {/* Role Card */}
-              <motion.div
-                variants={fadeInUp}
-                className="rounded-3xl p-8 border border-border/50 bg-card shadow-sm"
-              >
-                <h4 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">My Role (Backend / DB)</h4>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <Server className="text-[var(--teal)] mt-0.5 shrink-0" size={18} />
-                    <span className="text-sm text-muted-foreground font-medium">REST API 설계 및 구현</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Map className="text-[var(--teal)] mt-0.5 shrink-0" size={18} />
-                    <span className="text-sm text-muted-foreground font-medium">Open API 데이터 수집 및 가공</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Leaf className="text-[var(--teal)] mt-0.5 shrink-0" size={18} />
-                    <span className="text-sm text-muted-foreground font-medium">위치·정보 기반 맞춤 필터링 시스템</span>
-                  </li>
-                </ul>
-              </motion.div>
             </div>
-
-            {/* Feature Highlights */}
-            <motion.div variants={fadeInUp} className="flex flex-wrap gap-4 mt-4">
-              {['React Native', 'Spring Boot', 'FastAPI', 'YOLO V8', 'Kiwi NLP', 'Rank-BM25', 'Oracle'].map(tech => (
-                <div key={tech} className="px-4 py-2 rounded-xl bg-muted border border-border text-sm font-semibold text-foreground flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[var(--teal)]" />
-                  {tech}
-                </div>
-              ))}
-            </motion.div>
-
           </motion.div>
-        </section>
-
-      </main>
-
-      {/* Footer / Call to Action */}
-      <footer className="mt-20 py-12 border-t border-border/40 bg-muted/20 text-center relative z-10">
-        <h3 className="text-2xl md:text-3xl font-bold mb-6">함께 멋진 서비스를 만들어갈 준비가 되셨나요?</h3>
-        <p className="text-muted-foreground mb-8">아이디어를 현실로 구현하는 여정에 동참하겠습니다.</p>
-        <a href="mailto:contact@example.com" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--green-500)] to-[var(--teal)] text-white font-bold hover:shadow-lg hover:shadow-[var(--green-500)]/30 transition-all hover:-translate-y-1">
-          연락하기
-        </a>
-      </footer>
+        </div>
+      </div>
+      
     </div>
   );
 }

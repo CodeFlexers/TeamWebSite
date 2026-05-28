@@ -42,7 +42,7 @@ const containerVariants = {
       staggerChildren: 0.1,
     },
   },
-} as const;
+};
 
 const cardVariants = {
   hidden: { opacity: 0, y: 50, scale: 0.95 },
@@ -52,10 +52,10 @@ const cardVariants = {
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: "easeOut",
+      ease: "easeOut" as const,
     },
   },
-} as const;
+};
 
 export default function TeamSection() {
   const ref = useRef(null);
