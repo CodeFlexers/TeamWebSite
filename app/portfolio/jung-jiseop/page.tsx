@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from '@/components/ui/dialog'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import type { Project } from '@/types/project'
 import {
     Carousel,
@@ -64,18 +67,18 @@ const projects: Project[] = [
 
             팀장으로서 전체 기능 기획, 서비스 구조 설계, API 연동 방식 결정, AI 서버 구현, 배포 자동화 구성을 담당했습니다.
         `,
-        github: 'https://github.com',
+        github: 'https://github.com/Seopia/capstone-backend-fast-api',
         deploy: 'https://example.com',
         gallery: [
             {
-                image: '/jung-jiseop/gallery-1.jpg',
+                image: '/jung-jiseop/refill-emotion-log-page2.png',
                 title: '감정 캘린더 화면',
-                description: 'AI가 분석한 사용자의 일일 감정 상태를 시각적으로 표현한 캘린더. 날씨 아이콘으로 감정을 직관적으로 확인할 수 있습니다.'
+                description: 'AI가 분석한 사용자의 금일 또는 지난 감정 상태를 시각적으로 표현한 캘린더. 날씨 아이콘으로 감정을 직관적으로 확인할 수 있습니다.\n\nHugging Face에서 **Seonghaa/korean-emotion-classifier-roberta모델**을 사용하여 분노, 불안, 슬픔, 평온, 당황, 기쁨 감정 5가지를 \n구분 가능한 Text Classfication 모델을 사용했습니다.\n사용자의 오늘 하루 모든 대화내용에서 어떤 감정이 몇%를 차지하는지 예측할 수 있는 모델입니다.'
             },
             {
-                image: '/jung-jiseop/gallery-2.jpg',
+                image: '/jung-jiseop/refill-main-page.png',
                 title: '챗봇 대화 인터페이스',
-                description: '사용자와 AI가 실시간으로 대화할 수 있는 채팅 인터페이스. 자연스러운 대화 흐름으로 감정을 표현할 수 있습니다.'
+                description: '사용자와 AI가 실시간으로 대화할 수 있는 채팅 인터페이스입니다.\n채팅 방식은 아래의 순서로 이루어집니다.\n1. 사용자의 채팅 내역 최신 10개를 가져옵니다.\n2. LangChain의 Tool 기능을 활용해 LLM이 이전 대화내역이 더 필요하다고 판단되면 MongoDB Atlas의 벡터 유사도 검색을하여 관련 채팅 내역을 가져갑니다. (RAG)\n3. 정신의학적인 지식이 필요하다고 판단되면 위와 같이 Tool기능을 활용해 유사도 검색을 수행해 관련 전문지식을 가져갑니다.(RAG)\n4. 위 결과를 모두 합쳐 payload를 만들어낸 후 최종 응답 LLM에게 제출합니다\n5. 최종 응답 LLM이 유저에게 Streaming 방식으로 응답합니다.\n\n위 방식으로 불필요한 RAG검색을 줄이고, API비용을 최소화하였습니다.'
             },
             {
                 image: '/jung-jiseop/gallery-3.jpg',
@@ -246,6 +249,82 @@ const ProjectImageSlider = ({ project }: { project: Project }) => {
                 )}
             </div>
         </Carousel>
+    )
+}
+
+type GalleryItem = NonNullable<Project['gallery']>[number]
+
+const GalleryItemModal = ({ item, projectTitle }: { item: GalleryItem; projectTitle: string }) => {
+    const [hasError, setHasError] = useState(false)
+
+    return (
+        <Dialog>
+            <DialogTrigger asChild>
+                <button
+                    type="button"
+                    className="group w-full text-left"
+                >
+                    <div className="relative h-96 rounded-lg overflow-hidden border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 bg-muted/10">
+                        {!hasError ? (
+                            <Image
+                                src={item.image}
+                                alt={item.title || `${projectTitle} 갤러리 이미지`}
+                                fill
+                                sizes="(min-width: 1024px) 1024px, 100vw"
+                                className="object-cover"
+                                draggable={false}
+                                onError={() => setHasError(true)}
+                                style={{ cursor: 'pointer' }}
+                            />
+                        ) : (
+                            <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-muted/70 text-muted-foreground">
+                                <ImageIcon size={48} className="opacity-70" />
+                                <p className="text-sm font-medium">이미지를 불러올 수 없습니다.</p>
+                                <p className="text-xs text-muted-foreground/80">플레이스홀더가 표시됩니다.</p>
+                            </div>
+                        )}
+                    </div>
+                </button>
+            </DialogTrigger>
+            <div className="mt-4">
+                <h4 className="font-semibold text-lg text-foreground mb-2">{item.title}</h4>
+                <div className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                    <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                            p: ({ children }) => <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{children}</p>,
+                            li: ({ children }) => <li className="ml-4 list-disc text-sm text-muted-foreground leading-relaxed">{children}</li>,
+                        }}
+                    >
+                        {item.description}
+                    </ReactMarkdown>
+                </div>
+            </div>
+            <DialogContent className="grid h-[95vh] w-[95vw] max-w-[95vw] grid-rows-[1fr_auto] gap-0 overflow-hidden p-0 sm:max-w-[95vw]">
+                <div className="relative min-h-0 bg-background/90">
+                    {!hasError ? (
+                        <Image
+                            src={item.image}
+                            alt={item.title || `${projectTitle} 갤러리 이미지`}
+                            fill
+                            sizes="95vw"
+                            className="object-contain"
+                            draggable={false}
+                            onError={() => setHasError(true)}
+                        />
+                    ) : (
+                        <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-muted/70 text-muted-foreground">
+                            <ImageIcon size={72} className="opacity-70" />
+                            <p className="text-lg font-semibold">이미지를 불러올 수 없습니다.</p>
+                            <p className="text-sm text-muted-foreground/80">네트워크 오류 또는 경로 문제일 수 있습니다.</p>
+                        </div>
+                    )}
+                </div>
+                <div className="p-6">
+                    <DialogTitle className="text-2xl font-semibold">{item.title}</DialogTitle>
+                </div>
+            </DialogContent>
+        </Dialog>
     )
 }
 
@@ -432,20 +511,11 @@ const JungJiseop = () => {
                                                 </div>
                                                 <div className="space-y-8">
                                                     {project.gallery.map((item, idx) => (
-                                                        <div key={idx} className="group cursor-pointer">
-                                                            <div className="relative h-96 bg-linear-to-br from-primary/10 via-accent/10 to-primary/5 rounded-lg overflow-hidden border border-border/50 shadow-md hover:shadow-lg transition-all duration-300">
-                                                                <div className="absolute inset-0 flex items-center justify-center bg-muted/40 group-hover:bg-muted/30 transition-colors">
-                                                                    <div className="text-center">
-                                                                        <ImageIcon size={64} className="mx-auto mb-2 opacity-60" style={{ color: 'var(--icon-secondary)' }} strokeWidth={1.5} />
-                                                                        <p className="text-muted-foreground text-sm font-medium">이미지</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="mt-4">
-                                                                <h4 className="font-semibold text-lg text-foreground mb-2">{item.title}</h4>
-                                                                <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{item.description}</p>
-                                                            </div>
-                                                        </div>
+                                                        <GalleryItemModal
+                                                            key={idx}
+                                                            item={item}
+                                                            projectTitle={project.title}
+                                                        />
                                                     ))}
                                                 </div>
                                             </div>
