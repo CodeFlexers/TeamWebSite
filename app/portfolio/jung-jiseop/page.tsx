@@ -71,7 +71,7 @@ const projects: Project[] = [
         deploy: 'https://example.com',
         gallery: [
             {
-                image: '/jung-jiseop/refill-emotion-log-page2.png',
+                image: '/jung-jiseop/refill-emotion-log-page.png',
                 title: '감정 캘린더 화면',
                 description: 'AI가 분석한 사용자의 금일 또는 지난 감정 상태를 시각적으로 표현한 캘린더. 날씨 아이콘으로 감정을 직관적으로 확인할 수 있습니다.\n\nHugging Face에서 **Seonghaa/korean-emotion-classifier-roberta모델**을 사용하여 분노, 불안, 슬픔, 평온, 당황, 기쁨 감정 5가지를 \n구분 가능한 Text Classfication 모델을 사용했습니다.\n사용자의 오늘 하루 모든 대화내용에서 어떤 감정이 몇%를 차지하는지 예측할 수 있는 모델입니다.'
             },
