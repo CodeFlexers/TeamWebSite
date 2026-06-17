@@ -20,7 +20,7 @@ jobs:
           script: |
             echo "스크립트 실행"
 
-            cd /mnt/ssd/team-website
+            cd /mnt/ssd/front/TeamWebSite
 
             echo "Git 최신화 시작"
             git fetch origin
@@ -31,11 +31,11 @@ jobs:
             echo "패키지 설치 완료"
             npm run build
             echo "빌드 완료"
-            sudo rm -rf /mnt/ssd/www/TeamWebSite/*
-            sudo cp -r out/* /mnt/ssd/www/TeamWebSite/
+            sudo rm -rf /mnt/ssd/nginx/www/TeamWebSite/*
+            sudo cp -r out/* /mnt/ssd/nginx/www/TeamWebSite/
             echo "빌드 파일 복사 완료"
             
-            sudo chown -R seopia:www-data /mnt/ssd/www/TeamWebSite
+            sudo chown -R seopia:www-data /mnt/ssd/nginx/www/TeamWebSite
             echo "폴더 소유자 변경 완료"
 
             sudo systemctl restart nginx
