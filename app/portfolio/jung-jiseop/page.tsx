@@ -365,6 +365,15 @@ const GalleryItemModal = ({ item, projectTitle }: { item: GalleryItem; projectTi
 }
 
 const JungJiseop = () => {
+    const [activeProjectId, setActiveProjectId] = useState(projects[0].id)
+
+    const handleNextProjectClick = (currentIndex: number) => {
+        const nextProject = projects[(currentIndex + 1) % projects.length]
+
+        setActiveProjectId(nextProject.id)
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
     return (
         <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
             {/* Decorative background elements */}
@@ -389,7 +398,7 @@ const JungJiseop = () => {
                 </div>
 
                 {/* Tabs Section */}
-                <Tabs defaultValue="project-1" className="w-full">
+                <Tabs value={activeProjectId} onValueChange={setActiveProjectId} className="w-full">
                     {/* Tabs List - Top Position */}
                     <div className="mb-8 overflow-x-auto">
                         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 bg-transparent h-auto p-0">
@@ -406,7 +415,7 @@ const JungJiseop = () => {
                     </div>
 
                     {/* Tabs Content */}
-                    {projects.map((project) => (
+                    {projects.map((project, projectIndex) => (
                         <TabsContent key={project.id} value={project.id} className="mt-0">
                             <Card className="border-border/50 overflow-hidden hover:shadow-lg transition-all duration-300 backdrop-blur-sm bg-card/50">
                                 <div className="flex flex-col gap-8 p-8 md:p-10">
@@ -578,6 +587,13 @@ const JungJiseop = () => {
                                                 직접 체험해보세요!
                                             </a>
                                         )}
+                                        <button
+                                            type="button"
+                                            onClick={() => handleNextProjectClick(projectIndex)}
+                                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/10 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
+                                        >
+                                            {projectIndex === projects.length - 1 ? '처음으로 돌아가기' : '다음 프로젝트 보러가기'}
+                                        </button>
                                     </div>
                                 </div>
                             </Card>
