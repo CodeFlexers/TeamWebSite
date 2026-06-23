@@ -81,85 +81,122 @@ const projects: Project[] = [
                 description: '사용자와 AI가 실시간으로 대화할 수 있는 채팅 인터페이스입니다.\n채팅 방식은 아래의 순서로 이루어집니다.\n1. 사용자의 채팅 내역 최신 10개를 가져옵니다.\n2. LangChain의 Tool 기능을 활용해 LLM이 이전 대화내역이 더 필요하다고 판단되면 MongoDB Atlas의 벡터 유사도 검색을하여 관련 채팅 내역을 가져갑니다. (RAG)\n3. 정신의학적인 지식이 필요하다고 판단되면 위와 같이 Tool기능을 활용해 유사도 검색을 수행해 관련 전문지식을 가져갑니다.(RAG)\n4. 위 결과를 모두 합쳐 payload를 만들어낸 후 최종 응답 LLM에게 제출합니다\n5. 최종 응답 LLM이 유저에게 Streaming 방식으로 응답합니다.\n\n위 방식으로 불필요한 RAG검색을 줄이고, API비용을 최소화하였습니다.'
             },
             {
-                image: '/jung-jiseop/gallery-3.jpg',
-                title: '감정 분석 결과',
-                description: '하루 대화를 기반으로 분석된 감정 통계와 요약. 감정의 변화 추이를 그래프로 시각화하여 자신의 감정 패턴을 파악할 수 있습니다.'
+                image: '/jung-jiseop/refill-profile-page.png',
+                title: '프로필 페이지',
+                description: '간략한 통계나, 유저의 정보를 조회 이름, 소개를 편집할 수 있는 페이지입니다.'
             },
             {
-                image: '/jung-jiseop/gallery-4.jpg',
+                image: '/jung-jiseop/refill-emotion-log-create-diary.png',
                 title: '일기 생성 기능',
-                description: '대화 내용을 기반으로 AI가 자동으로 생성한 일기. 사용자의 감정을 담아낸 감성적인 일기 형식으로 기록됩니다.'
+                description: '오늘의 대화 내용을 기반으로 AI가 자동으로 생성한 일기. 사용자의 감정을 담아낸 감성적인 일기 형식으로 기록됩니다.'
+            },
+            {
+                image: '/jung-jiseop/refill-community-page.png',
+                title: '일기 공유 커뮤니티',
+                description: '생성한 일기를 공유하면 추가적인 첨언과 함께 오늘의 일기를 사람들과 공유할 수 있습니다.'
+            },
+            {
+                image: '/jung-jiseop/refill-community-detail.png',
+                title: '일기 공유 커뮤니티 상세',
+                description: '일기를 공유한 글에서 댓글을 작성하여 사람들과 소통할 수 있습니다.'
             }
         ]
     },
-        {
+    {
         id: 'project-2',
-        tab: 'AI 챗봇',
-        title: 'AI 챗봇 사용자 정신감정 분석 멘탈케어 플랫폼',
-        description: '사용자와의 일상 대화를 기반으로 감정 상태를 분석하고, 하루 감정 기록과 요약을 제공하는 AI 멘탈케어 플랫폼입니다.',
-        role: '팀원',
+        tab: '파일 클라우드 서비스',
+        title: 'Seopia Cloud',
+        description: '개인 클라우드, 공용 클라우드, 그룹 클라우드, 관리자 페이지를 제공하며 사용자 권한에 따라 파일 업로드, 공유, 관리 기능을 분리한 웹 기반 클라우드 스토리지 서비스입니다. 프론트앤드는 AI를 적극 활용했습니다.',
+        role: '개인 프로젝트',
         architecture: [
-            'Next.js: 사용자 인터페이스 및 감정 캘린더 화면',
-            'FastAPI: AI 챗봇 응답, 요약, 감정 분석 처리',
-            'MongoDB: 사용자 대화 기록 저장, 벡터 검색',
-            'MariaDB: 사용자 정보 및 분석 결과 저장',
-            'LangChain: RAG 및 LLM 처리 흐름 구성',
-            'Raspberry Pi: 서비스 배포 환경',
+            'React: 개인·공용·그룹 클라우드 및 관리자 페이지 UI 구현',
+            'Spring Boot: 사용자 인증, 파일 관리, 그룹 관리, 관리자 기능 API 처리',
+            'Spring Security: JWT 기반 인증 및 역할별 접근 제어',
+            'MariaDB: 사용자, 파일 메타데이터, 그룹, 권한, 공유 정보 저장',
+            'Server File System: 실제 업로드 파일 저장 및 디렉터리 관리',
+            'Nginx: 프론트엔드 정적 파일 서빙 및 백엔드 API 프록시',
+            'Raspberry Pi: 파일 저장소 및 서비스 배포 환경 구성',
         ],
-        features: [ //주요 기능
-            'AI 챗봇 실시간 대화',
-            '대화 기반 감정 분석',
-            '하루 단위 대화 요약 및 일기 생성',
-            '감정 캘린더 시각화',
-            '이전 대화 기록 기반 RAG 응답',
-            '사용자 인증 및 대화방 관리',
-            '스트리밍 응답 처리',
+        features: [
+            '사용자 회원가입 및 로그인',
+            'JWT 기반 사용자 인증',
+            '개인 클라우드 파일 업로드 및 관리',
+            '공용 클라우드 파일 업로드 및 조회',
+            '그룹 클라우드 생성 및 그룹별 파일 관리',
+            '그룹원 초대 및 그룹 권한 관리',
+            '파일 업로드, 다운로드, 삭제 기능',
+            '파일 메타데이터 조회 및 관리',
+            '사용자별 파일 접근 권한 검증',
+            '관리자 페이지를 통한 사용자 관리',
+            '관리자 권한 기반 공용 파일 관리',
+            '폴더 구조로 유형별 파일 분리 관리',
         ],
-        contribution: [ //담당 역할
-            '프로젝트 전체 기획 및 기능 명세 작성',
-            '프론트엔드, 백엔드, AI 서버 간 API 연동 구조 설계',
-            'FastAPI 기반 AI 분석 서버 구현',
-            'OpenAI API 및 LangChain 기반 대화 분석 흐름 설계',
-            'MongoDB 대화 기록 저장 구조 설계',
-            'MongoDB 사용자 대화 벡터 검색 구현',
-            '금일 사용자 대화 기반 감정 분석 후 날씨로 표현',
-            'MariaDB 기반 사용자 및 분석 결과 데이터 관리',
-            'Raspberry Pi 서버 배포 및 CI/CD 자동화 구성',
-            '사용자 카카오 로그인, 회원 가입 쿠키 기반 인증 처리',
+        contribution: [
+            '클라우드 스토리지 서비스 전체 기획 및 기능 명세 작성',
+            '개인·공용·그룹 클라우드 구조 설계',
+            'React 기반 클라우드 파일 관리 화면 구현',
+            '개인 클라우드, 공용 클라우드, 그룹 클라우드 UI 분리 구현',
+            '관리자 페이지 화면 및 관리 기능 구현',
+            'Spring Boot 기반 파일 업로드, 다운로드, 삭제 API 구현',
+            'Spring Security와 JWT 기반 사용자 인증 구조 구현',
+            '사용자 역할과 그룹 권한에 따른 API 접근 제어 구현',
+            'MultipartFile 기반 파일 업로드 처리 및 서버 저장 구조 설계',
+            'MariaDB 기반 사용자, 파일, 그룹, 권한 데이터 모델 설계',
+            '파일 실제 저장 경로와 DB 메타데이터를 분리한 구조 구현',
+            '그룹 생성, 그룹원 관리, 그룹 파일 접근 로직 구현',
+            '관리자 권한 기반 사용자 및 파일 관리 기능 구현',
+            'Nginx와 Linux 서버 기반 서비스 배포 환경 구성',
         ],
         details: `
-            사용자가 AI 챗봇과 대화하면 대화 내용을 기반으로 감정 상태를 분석하고, 하루 단위의 감정 요약과 일기 형태의 기록을 생성하는 멘탈케어 플랫폼을 개발했습니다.
+개인 클라우드, 공용 클라우드, 그룹 클라우드, 관리자 페이지를 제공하는 웹 기반 클라우드 파일 관리 플랫폼을 개발했습니다.
 
-            프론트엔드는 Next.js 기반으로 구현했으며, 사용자가 챗봇과 자연스럽게 대화할 수 있는 인터페이스와 감정 캘린더 화면을 구성했습니다. 사용자의 하루 감정은 날씨 아이콘 형태로 시각화하여 직관적으로 확인할 수 있도록 설계했습니다.
+이 서비스는 저장소 유형과 사용자 권한에 따라 파일 접근 범위를 분리한 구조로 설계했습니다. 사용자는 개인 클라우드에서 본인 파일을 관리하고, 공용 클라우드에서는 여러 사용자가 공유 파일을 조회할 수 있으며, 그룹 클라우드에서는 특정 그룹에 속한 사용자만 파일을 업로드·다운로드할 수 있도록 구현했습니다.
 
-            백엔드는 사용자 인증, 대화방, 메시지 저장, 감정 분석 결과 저장 기능을 분리하여 구성했습니다. AI 분석 서버는 Python 기반 FastAPI로 구현했으며, OpenAI API와 LangChain을 활용해 사용자 대화를 요약하고 감정 상태를 추론하도록 처리했습니다.
+프론트엔드는 React 기반으로 구현했으며, 개인·공용·그룹 클라우드와 관리자 페이지를 각각 분리된 화면으로 구성했습니다. 사용자는 파일 목록 조회, 업로드, 다운로드, 삭제 기능을 사용할 수 있고, 그룹 클라우드에서는 그룹 목록, 그룹 상세, 그룹원 관리 기능을 함께 제공했습니다.
 
-            또한 스트리밍 응답 방식을 적용해 AI 답변이 실시간으로 출력되는 사용자 경험을 구현했습니다. MongoDB에 저장된 이전 대화 기록을 기반으로 RAG 구조를 적용하여, 사용자의 과거 대화 맥락을 반영할 수 있는 챗봇 흐름을 설계했습니다.
+백엔드는 Spring Boot 기반 REST API로 구성했습니다. 실제 파일은 서버 파일 시스템에 저장하고, 파일명, 저장 경로, 파일 크기, 확장자, 업로드 사용자, 저장소 유형, 그룹 코드 등의 메타데이터는 MariaDB에 저장했습니다. 이를 통해 파일 데이터와 관리 데이터를 분리하고, 파일 조회 및 권한 검증을 효율적으로 처리했습니다.
 
-            팀장으로서 전체 기능 기획, 서비스 구조 설계, API 연동 방식 결정, AI 서버 구현, 배포 자동화 구성을 담당했습니다.
-        `,
-        github: 'https://github.com',
-        deploy: 'https://example.com',
+대용량 파일 업로드를 위해 파일을 일정 크기의 조각으로 나누어 전송하는 청킹 업로드 방식을 적용했습니다. 프론트엔드에서 파일을 chunk 단위로 분할해 순차 전송하고, 백엔드에서는 각 chunk를 임시 저장한 뒤 모든 조각이 업로드되면 하나의 파일로 병합하도록 구현했습니다. 이를 통해 대용량 파일 업로드 중 네트워크 부담을 줄이고, 일반적인 단일 업로드 방식보다 안정적인 파일 전송 구조를 구성했습니다.
+
+인증 및 권한 처리는 Spring Security와 JWT를 기반으로 구현했습니다. 개인 클라우드 파일은 소유자만 접근할 수 있도록 제한했고, 그룹 클라우드 파일은 그룹 소속 여부를 검증한 뒤 접근을 허용했습니다. 관리자 페이지는 관리자 권한을 가진 사용자만 접근할 수 있도록 분리했습니다.
+    `,
+        github: 'https://github.com/Seopia/MyFileServer',
+        deploy: 'https://cloud.seopia.co.kr',
         gallery: [
             {
-                image: '/jung-jiseop/gallery-1.jpg',
-                title: '감정 캘린더 화면',
-                description: 'AI가 분석한 사용자의 일일 감정 상태를 시각적으로 표현한 캘린더. 날씨 아이콘으로 감정을 직관적으로 확인할 수 있습니다.'
+                image: '/jung-jiseop/cloud-private-page.png',
+                title: '개인 클라우드',
+                description: '사용자 본인만 접근할 수 있는 개인 저장소 화면입니다. 파일 업로드, 다운로드, 삭제 기능을 제공하며,\n **폴더 구조로 파일을 저장 가능합니다.** \nJWT 인증 정보를 기반으로 사용자별 파일 목록을 분리하여 조회하도록 구현했습니다.'
             },
             {
-                image: '/jung-jiseop/gallery-2.jpg',
-                title: '챗봇 대화 인터페이스',
-                description: '사용자와 AI가 실시간으로 대화할 수 있는 채팅 인터페이스. 자연스러운 대화 흐름으로 감정을 표현할 수 있습니다.'
+                image: '/jung-jiseop/cloud-chunking.png',
+                title: '개인 클라우드 (파일 업로드)',
+                description: '용량이 작은 파일은 일반 multipart 업로드 방식으로 즉시 전송하고, 대용량 파일은 일정 크기의 chunk로 분할하여 순차 업로드하도록 구현했습니다.\n백엔드에서는 업로드된 chunk를 임시 저장한 뒤 모든 조각이 전송되면 하나의 파일로 병합하여, 대용량 파일 업로드의 안정성을 높였습니다.',
             },
             {
-                image: '/jung-jiseop/gallery-3.jpg',
-                title: '감정 분석 결과',
-                description: '하루 대화를 기반으로 분석된 감정 통계와 요약. 감정의 변화 추이를 그래프로 시각화하여 자신의 감정 패턴을 파악할 수 있습니다.'
+                image: '/jung-jiseop/cloud-private-file-detail.png',
+                title: '개인 클라우드 (파일 상세보기)',
+                description: '파일 유형에 따라 미리보기가 가능한 파일은 브라우저 내에서 바로 확인할 수 있도록 구현했습니다.\n사용자는 파일 다운로드와 삭제를 수행할 수 있으며,\n**공유하기 기능을 통해 UUID 기반 고유 URL을 생성하고 해당 링크로 파일을 공유할 수 있도록 설계했습니다.**',
             },
             {
-                image: '/jung-jiseop/gallery-4.jpg',
-                title: '일기 생성 기능',
-                description: '대화 내용을 기반으로 AI가 자동으로 생성한 일기. 사용자의 감정을 담아낸 감성적인 일기 형식으로 기록됩니다.'
+                image: '/jung-jiseop/cloud-public-page.png',
+                title: '공용 클라우드',
+                description: '여러 사용자가 함께 접근할 수 있는 공용 파일 저장소 화면입니다. 공용으로 등록된 파일을 조회하고 다운로드할 수 있으며, 권한에 따라 파일 등록 및 관리 기능을 분리할 수 있도록 설계했습니다.'
+            },
+            {
+                image: '/jung-jiseop/cloud-group-page.png',
+                title: '그룹 클라우드',
+                description: '특정 그룹에 소속된 사용자들만 접근할 수 있는 그룹 파일 저장소 화면입니다. 그룹 생성, 그룹원 관리, 그룹별 파일 업로드 및 다운로드 기능을 제공하며, 그룹 소속 여부를 기준으로 파일 접근 권한을 검증했습니다.'
+            },
+            {
+                image: '/jung-jiseop/cloud-admin-page.png',
+                title: '관리자 페이지',
+                description: '관리자 권한을 가진 사용자가 서비스 내 사용자, 파일, 공용 클라우드 데이터를 관리할 수 있는 화면입니다. 일반 사용자 기능과 관리자 기능을 분리하여 운영 관리가 가능하도록 구현했습니다.'
+            },
+            {
+                image: '/jung-jiseop/',
+                title: '마이 페이지',
+                description: '간단한 정보를 조회하고 수정할 수 있는 페이지입니다.'
             }
         ]
     }
@@ -237,11 +274,10 @@ const ProjectImageSlider = ({ project }: { project: Project }) => {
                                     aria-label={`${idx + 1}번째 이미지 보기`}
                                     aria-current={selectedIndex === idx}
                                     onClick={() => api?.scrollTo(idx)}
-                                    className={`h-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
-                                        selectedIndex === idx
-                                            ? 'w-7 bg-primary'
-                                            : 'w-2.5 bg-foreground/30 hover:bg-foreground/50'
-                                    }`}
+                                    className={`h-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${selectedIndex === idx
+                                        ? 'w-7 bg-primary'
+                                        : 'w-2.5 bg-foreground/30 hover:bg-foreground/50'
+                                        }`}
                                 />
                             ))}
                         </div>
@@ -264,14 +300,14 @@ const GalleryItemModal = ({ item, projectTitle }: { item: GalleryItem; projectTi
                     type="button"
                     className="group w-full text-left"
                 >
-                    <div className="relative h-96 rounded-lg overflow-hidden border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 bg-muted/10">
+                    <div className="relative h-96 rounded-lg overflow-hidden border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 bg-muted/40">
                         {!hasError ? (
                             <Image
                                 src={item.image}
                                 alt={item.title || `${projectTitle} 갤러리 이미지`}
                                 fill
                                 sizes="(min-width: 1024px) 1024px, 100vw"
-                                className="object-cover"
+                                className="object-contain"
                                 draggable={false}
                                 onError={() => setHasError(true)}
                                 style={{ cursor: 'pointer' }}
@@ -389,13 +425,13 @@ const JungJiseop = () => {
                                             <p className="text-accent font-medium text-base leading-relaxed mb-4">
                                                 {project.description}
                                             </p>
-                                            
+
                                             {/* Links */}
                                             <div className="flex flex-wrap gap-3 pt-2">
                                                 {project.github && (
-                                                    <a 
-                                                        href={project.github} 
-                                                        target="_blank" 
+                                                    <a
+                                                        href={project.github}
+                                                        target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
                                                     >
@@ -404,9 +440,9 @@ const JungJiseop = () => {
                                                     </a>
                                                 )}
                                                 {project.deploy && (
-                                                    <a 
-                                                        href={project.deploy} 
-                                                        target="_blank" 
+                                                    <a
+                                                        href={project.deploy}
+                                                        target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
                                                     >
@@ -503,6 +539,17 @@ const JungJiseop = () => {
                                         </div>
 
                                         {/* Gallery Section */}
+                                        {project.deploy && (
+                                            <a
+                                                href={project.deploy}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
+                                            >
+                                                <ExternalLink size={18} strokeWidth={2.5} />
+                                                배포 사이트 들어가보기!!
+                                            </a>
+                                        )}
                                         {project.gallery && project.gallery.length > 0 && (
                                             <div>
                                                 <div className="flex items-center gap-2 mb-6 pb-4 border-b-2 border-primary/30">
@@ -520,6 +567,17 @@ const JungJiseop = () => {
                                                 </div>
                                             </div>
                                         )}
+                                        {project.deploy && (
+                                            <a
+                                                href={project.deploy}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
+                                            >
+                                                <ExternalLink size={18} strokeWidth={2.5} />
+                                                직접 체험해보세요!
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
                             </Card>
@@ -527,7 +585,9 @@ const JungJiseop = () => {
                     ))}
                 </Tabs>
 
+
                 {/* Projects Count */}
+
                 <div className="mt-12 pt-8 border-t border-border/50 text-center">
                     <p className="text-muted-foreground text-sm">
                         총 <span className="text-primary font-bold text-base">{projects.length}</span>개의 프로젝트
