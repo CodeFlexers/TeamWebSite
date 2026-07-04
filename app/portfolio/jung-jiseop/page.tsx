@@ -26,7 +26,7 @@ const projects: Project[] = [
         tab: 'AI 정신감정 챗봇',
         title: 'AI 챗봇 사용자 정신감정 분석 멘탈케어 플랫폼',
         description: '사용자와의 일상 대화를 기반으로 감정 상태를 분석하고, 하루 감정 기록과 요약을 제공하는 AI 멘탈케어 플랫폼입니다.',
-        role: '팀장',
+        role: '아키텍쳐 설계, 백앤드 개발 (팀장)',
         architecture: [
             'Next.js: 사용자 인터페이스 및 감정 캘린더 화면',
             'FastAPI: AI 챗봇 응답, 요약, 감정 분석 처리',
@@ -179,12 +179,12 @@ const projects: Project[] = [
                 description: '파일 유형에 따라 미리보기가 가능한 파일은 브라우저 내에서 바로 확인할 수 있도록 구현했습니다.\n사용자는 파일 다운로드와 삭제를 수행할 수 있으며,\n**공유하기 기능을 통해 UUID 기반 고유 URL을 생성하고 해당 링크로 파일을 공유할 수 있도록 설계했습니다.**',
             },
             {
-                image: '/jung-jiseop/cloud-public-page.png',
+                image: '/jung-jiseop/cloud-public.png',
                 title: '공용 클라우드',
                 description: '여러 사용자가 함께 접근할 수 있는 공용 파일 저장소 화면입니다. 공용으로 등록된 파일을 조회하고 다운로드할 수 있으며, 권한에 따라 파일 등록 및 관리 기능을 분리할 수 있도록 설계했습니다.'
             },
             {
-                image: '/jung-jiseop/cloud-group-page.png',
+                image: '/jung-jiseop/cloud-group.png',
                 title: '그룹 클라우드',
                 description: '특정 그룹에 소속된 사용자들만 접근할 수 있는 그룹 파일 저장소 화면입니다. 그룹 생성, 그룹원 관리, 그룹별 파일 업로드 및 다운로드 기능을 제공하며, 그룹 소속 여부를 기준으로 파일 접근 권한을 검증했습니다.'
             },
@@ -194,15 +194,139 @@ const projects: Project[] = [
                 description: '관리자 권한을 가진 사용자가 서비스 내 사용자, 파일, 공용 클라우드 데이터를 관리할 수 있는 화면입니다. 일반 사용자 기능과 관리자 기능을 분리하여 운영 관리가 가능하도록 구현했습니다.'
             },
             {
-                image: '/jung-jiseop/',
+                image: '/jung-jiseop/cloud-profile.png',
                 title: '마이 페이지',
                 description: '간단한 정보를 조회하고 수정할 수 있는 페이지입니다.'
             }
         ]
+    },
+    {
+        id: 'project-3',
+        tab: 'YOLO 모델 최적화',
+        title: 'YOLO 기반 재활용품 분류 모델',
+        description: 'AI Hub 재활용품 분류 및 선별 데이터를 YOLO 학습 형식으로 변환하고, 금속캔·페트병·플라스틱·스티로폼 4개 클래스를 탐지하는 객체 탐지 모델을 학습한 프로젝트입니다. 학습 결과를 MLflow로 관리하고, ONNX 변환 및 Hailo-8 NPU용 HEF 컴파일 스크립트를 구성해 엣지 디바이스에 배포하였습니다.',
+        role: 'AI 모델 학습·데이터 전처리·모델 변환',
+
+        architecture: [
+            'Python: 데이터 전처리, 학습, 추론, 변환 스크립트 구현',
+            'Ultralytics YOLO: 재활용품 객체 탐지 모델 학습 및 추론',
+            'PyTorch: YOLO 학습 환경 및 GPU 사용 여부 확인',
+            'AI Hub Dataset: 재활용품 분류 및 선별 데이터 활용',
+            'Custom Dataset Converter: JSON 어노테이션을 YOLO 라벨 형식으로 변환',
+            'MLflow: 학습 파라미터와 모델 artifact 관리',
+            'ONNX: 학습된 YOLO 모델 내보내기',
+            'Hailo SDK: ONNX 모델을 Hailo-8용 HEF로 변환하기 위한 최적화·컴파일 스크립트 구성',
+        ],
+
+        features: [
+            '금속캔, 페트병, 플라스틱, 스티로폼 4개 클래스 객체 탐지',
+            'AI Hub JSON 어노테이션 데이터 파싱',
+            'IMAGE_INFO 기반 이미지 크기 정보 추출',
+            'ANNOTATION_INFO 기반 객체 클래스 및 좌표 정보 추출',
+            'BOX, RECT, BBOX, POLYGON 형식의 어노테이션 처리',
+            'Polygon 좌표를 Bounding Box로 변환',
+            'YOLO 형식의 class, x_center, y_center, width, height 라벨 생성',
+            '이미지 너비와 높이를 기준으로 Bounding Box 좌표 정규화',
+            '잘못된 클래스, 좌표, shape 데이터 스킵 통계 관리',
+            '학습·검증 데이터셋 자동 분할',
+            'data.yaml 기반 클래스 정보 관리',
+            'YOLO 학습 결과 저장 및 best.pt, last.pt 관리',
+            'MLflow 기반 학습 파라미터 및 모델 artifact 기록',
+            '이미지 또는 폴더 단위 객체 탐지 추론',
+            '클래스별 탐지 개수 요약 출력',
+            '학습된 모델의 ONNX 변환',
+            'Calibration 이미지 기반 Hailo 최적화 스크립트 구성',
+        ],
+
+        contribution: [
+            '재활용품 객체 탐지를 위한 YOLO 학습 파이프라인 구성',
+            'AI Hub 재활용품 데이터셋의 JSON 라벨 구조 분석',
+            '금속캔, 페트병, 플라스틱, 스티로폼 4개 클래스 매핑 정의',
+            'IMAGE_INFO의 IMAGE_WIDTH, IMAGE_HEIGHT를 사용한 좌표 정규화 로직 구현',
+            'ANNOTATION_INFO의 CLASS, SHAPE_TYPE, POINTS 정보를 활용한 객체 좌표 추출',
+            'BOX 계열 어노테이션과 POLYGON 어노테이션을 YOLO Bounding Box 형식으로 변환',
+            '변환 과정에서 unknown class, unsupported shape, bad points, bad bbox 통계를 기록하도록 구성',
+            '대량 JSON 파일을 일괄 변환하는 YoloLabelConverter 구현',
+            '학습 이미지와 라벨을 train/valid 데이터셋으로 자동 분리하는 전처리 스크립트 구현',
+            'datasets/data.yaml에 YOLO 학습용 클래스 정보 구성',
+            'configs/base_config.yaml을 통한 학습 설정 중앙 관리',
+            'YOLOTrainer 클래스로 모델 로드, GPU 확인, 학습 실행, MLflow 기록을 모듈화',
+            'YOLOPredictor 클래스로 모델 로드, 추론 실행, 탐지 결과 요약 기능 구현',
+            '학습 결과로 best.pt, last.pt 및 best.onnx 산출물 생성',
+            'ONNX 내보내기 스크립트와 Hailo-8 HEF 컴파일용 스크립트 구성',
+            'Calibration 데이터 생성을 위한 이미지 전처리 스크립트 작성',
+        ],
+
+        details: `
+AI Hub의 재활용품 분류 및 선별 데이터를 YOLO 객체 탐지 모델 학습에 사용할 수 있도록 전처리하고, 재활용품 4개 클래스를 탐지하는 모델을 학습한 프로젝트입니다.
+
+데이터셋은 이미지와 JSON 어노테이션으로 구성되어 있으며, JSON 내부의 IMAGE_INFO와 ANNOTATION_INFO를 읽어 YOLO 라벨 형식으로 변환했습니다. IMAGE_INFO에서는 이미지의 너비와 높이를 가져오고, ANNOTATION_INFO에서는 객체의 CLASS, SHAPE_TYPE, POINTS 정보를 추출했습니다.
+
+어노테이션 shape은 BOX, RECT, BBOX, POLYGON 형식을 처리하도록 구현했습니다. BOX 계열 데이터는 POINTS의 x, y, width, height 값을 그대로 사용하고, POLYGON 데이터는 모든 좌표의 최소·최대 x/y 값을 계산해 Bounding Box로 변환했습니다. 이후 이미지 크기를 기준으로 x_center, y_center, width, height 값을 0~1 범위로 정규화해 YOLO 라벨 파일을 생성했습니다.
+
+전처리 과정에서는 금속캔, 페트병, 플라스틱, 스티로폼 4개 클래스만 학습 대상으로 사용했습니다. 알 수 없는 클래스, 지원하지 않는 shape, 잘못된 좌표, 유효하지 않은 bbox는 스킵하고 통계를 출력하도록 구성해 변환 결과를 검수할 수 있게 했습니다.
+
+학습 데이터는 datasets/data.yaml에서 관리하며, train/images, train/labels, valid/images, valid/labels 구조로 구성했습니다. preprocess_data.py는 JSON 라벨 변환과 train/valid 분할을 한 번에 수행할 수 있고, split_validation.py는 별도 검증 데이터 분할용으로 구성되어 있습니다.
+
+모델 학습은 Ultralytics YOLO 기반으로 진행했습니다. train_refactored.py는 configs/base_config.yaml을 로드한 뒤 YOLOTrainer를 통해 yolo11n.pt 모델을 학습합니다. 학습 설정은 이미지 크기 640, batch size 10, patience 10, GPU device 0 기준으로 구성되어 있으며, MLflow를 통해 학습 파라미터와 best 모델 artifact를 기록하도록 구현했습니다.
+
+추론은 test_refactored.py와 YOLOPredictor 클래스를 통해 수행됩니다. 모델 경로, 입력 이미지 또는 폴더, 이미지 크기, confidence threshold, IoU threshold, device를 CLI 인자로 지정할 수 있으며, 탐지 결과를 저장하고 클래스별 탐지 개수를 요약해 출력합니다.
+
+엣지 배포를 위해 학습된 best.pt 모델을 ONNX로 변환하는 스크립트를 구성했고, Hailo SDK의 ClientRunner를 사용해 ONNX 모델을 Hailo-8용 HEF로 컴파일하기 위한 스크립트도 작성했습니다. 이 과정에서 calibration_data.py로 640x640 크기의 calibration numpy 데이터를 생성하고, onnx_to_hef.py에서 translate_onnx_model, optimize, compile 단계를 수행하도록 구성했습니다.
+
+현재 저장소에서 확인되는 최종 학습 산출물은 runs/detect/trash_train5/weights/best.pt, last.pt, best.onnx이며, HEF 파일 자체는 저장소에서 확인되지 않습니다. 따라서 이 프로젝트의 정확한 범위는 YOLO 학습·추론 파이프라인 구축, MLflow 기반 실험 관리, ONNX 변환, Hailo-8 NPU 배포를 위한 변환 스크립트 구성입니다.
+  `,
+
+        github: '',
+
+        gallery: [
+            {
+                image: '/jung-jiseop/yolo-dataset.png',
+                title: '재활용품 데이터셋',
+                description: 'AI Hub 재활용품 분류 및 선별 데이터의 이미지와 JSON 어노테이션을 YOLO 학습 데이터로 사용했습니다.'
+            },
+            {
+                image: '/jung-jiseop/yolo-converter.png',
+                title: 'JSON to YOLO 라벨 변환',
+                description: 'IMAGE_INFO와 ANNOTATION_INFO를 파싱해 객체 클래스와 좌표를 추출하고 YOLO 라벨 형식으로 변환했습니다.'
+            },
+            {
+                image: '/jung-jiseop/yolo-label-visualization.png',
+                title: 'Bounding Box 변환',
+                description: 'BOX 계열 어노테이션과 POLYGON 어노테이션을 Bounding Box로 변환하고 이미지 크기 기준으로 정규화했습니다.'
+            },
+            {
+                image: '/jung-jiseop/yolo-training.png',
+                title: 'YOLO 모델 학습',
+                description: 'Ultralytics YOLO를 사용해 금속캔, 페트병, 플라스틱, 스티로폼 4개 클래스를 탐지하는 모델을 학습했습니다.'
+            },
+            {
+                image: '/jung-jiseop/yolo-mlflow.png',
+                title: 'MLflow 실험 관리',
+                description: '학습 파라미터와 모델 artifact를 MLflow에 기록해 실험 결과와 모델 파일을 관리했습니다.'
+            },
+            {
+                image: '/jung-jiseop/yolo-result.png',
+                title: '객체 탐지 결과',
+                description: '학습된 모델로 이미지 또는 폴더 입력을 추론하고, 탐지 결과 저장 및 클래스별 탐지 개수 요약을 수행했습니다.'
+            },
+            {
+                image: '/jung-jiseop/yolo-onnx.png',
+                title: 'ONNX 모델 변환',
+                description: '학습된 YOLO 모델을 ONNX 형식으로 내보내 엣지 배포를 위한 중간 모델 파일을 생성했습니다.'
+            },
+            {
+                image: '/jung-jiseop/yolo-hailo.png',
+                title: 'Hailo-8 변환 스크립트',
+                description: 'Calibration 데이터를 사용해 ONNX 모델을 Hailo SDK에서 최적화하고 HEF로 컴파일하기 위한 스크립트를 구성했습니다.'
+            }
+        ]
     }
+
 ]
 
 const ProjectImageSlider = ({ project }: { project: Project }) => {
+    // const hash = window.location.hash;
     const [api, setApi] = useState<CarouselApi>()
     const [selectedIndex, setSelectedIndex] = useState(0)
     const gallery = project.gallery ?? []
@@ -366,7 +490,18 @@ const GalleryItemModal = ({ item, projectTitle }: { item: GalleryItem; projectTi
 
 const JungJiseop = () => {
     const [activeProjectId, setActiveProjectId] = useState(projects[0].id)
+    useEffect(() => {
+        const hash = window.location.hash.replace('#', '')
+        const index = Number(hash)
 
+        if (
+            Number.isInteger(index) &&
+            index >= 0 &&
+            index < projects.length
+        ) {
+            setActiveProjectId(projects[index].id)
+        }
+    }, [])
     const handleNextProjectClick = (currentIndex: number) => {
         const nextProject = projects[(currentIndex + 1) % projects.length]
 
@@ -592,7 +727,7 @@ const JungJiseop = () => {
                                             onClick={() => handleNextProjectClick(projectIndex)}
                                             className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/10 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
                                         >
-                                            {projectIndex === projects.length - 1 ? '처음으로 돌아가기' : '다음 프로젝트 보러가기'}
+                                            {projectIndex === projects.length - 1 ? '처음 프로젝트로 돌아가기' : '다음 프로젝트 보러가기'}
                                         </button>
                                     </div>
                                 </div>
