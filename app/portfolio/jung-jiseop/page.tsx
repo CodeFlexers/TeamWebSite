@@ -18,7 +18,7 @@ import {
     CarouselPrevious,
     type CarouselApi,
 } from '@/components/ui/carousel'
-import { Target, Building2, Sparkles, Briefcase, FileText, Image as ImageIcon, CheckCircle2, Github, ExternalLink } from 'lucide-react'
+import { Target, Building2, Sparkles, Briefcase, FileText, Image as ImageIcon, CheckCircle2, Github, ExternalLink, ArrowRight, RotateCcw } from 'lucide-react'
 
 const projects: Project[] = [
     {
@@ -362,6 +362,9 @@ const ProjectImageSlider = ({ project }: { project: Project }) => {
             className="group relative w-full outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-xl"
         >
             <div className="relative h-64 md:h-96 overflow-hidden rounded-xl border border-border/50 bg-muted/40 shadow-md">
+                <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-primary/10 via-background to-accent/10" />
+                <div className="pointer-events-none absolute inset-0 opacity-45 [background-image:linear-gradient(135deg,rgba(255,255,255,0.12)_25%,transparent_25%,transparent_50%,rgba(255,255,255,0.12)_50%,rgba(255,255,255,0.12)_75%,transparent_75%,transparent)] [background-size:22px_22px] dark:opacity-20" />
+                <div className="pointer-events-none absolute inset-x-6 top-6 h-20 rounded-full bg-primary/10 blur-3xl" />
                 <CarouselContent className="ml-0 h-full">
                     {gallery.map((item, idx) => (
                         <CarouselItem key={item.image} className="h-full pl-0">
@@ -373,7 +376,7 @@ const ProjectImageSlider = ({ project }: { project: Project }) => {
                                     priority={idx === 0}
                                     draggable={false}
                                     sizes="(min-width: 768px) 1024px, 100vw"
-                                    className="object-contain"
+                                    className="object-contain drop-shadow-2xl"
                                 />
                             </div>
                         </CarouselItem>
@@ -424,51 +427,47 @@ const GalleryItemModal = ({ item, projectTitle }: { item: GalleryItem; projectTi
                     type="button"
                     className="group w-full text-left"
                 >
-                    <div className="relative h-96 rounded-lg overflow-hidden border border-border/50 shadow-md hover:shadow-lg transition-all duration-300 bg-muted/40">
+                    <div className="rounded-lg border border-border/50 bg-muted/40 shadow-md transition-all duration-300 group-hover:-translate-y-0.5 group-hover:border-primary/50 group-hover:shadow-xl">
                         {!hasError ? (
-                            <Image
+                            <img
                                 src={item.image}
                                 alt={item.title || `${projectTitle} 갤러리 이미지`}
-                                fill
-                                sizes="(min-width: 1024px) 1024px, 100vw"
-                                className="object-contain"
+                                className="h-auto w-full max-w-full rounded-lg object-contain"
                                 draggable={false}
                                 onError={() => setHasError(true)}
                                 style={{ cursor: 'pointer' }}
                             />
                         ) : (
-                            <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-muted/70 text-muted-foreground">
+                            <div className="flex min-h-80 w-full flex-col items-center justify-center gap-3 rounded-lg bg-muted/70 text-muted-foreground">
                                 <ImageIcon size={48} className="opacity-70" />
-                                <p className="text-sm font-medium">이미지를 불러올 수 없습니다.</p>
-                                <p className="text-xs text-muted-foreground/80">플레이스홀더가 표시됩니다.</p>
+                                <p className="text-base font-medium">이미지를 불러올 수 없습니다.</p>
+                                <p className="text-sm text-muted-foreground/80">플레이스홀더가 표시됩니다.</p>
                             </div>
                         )}
                     </div>
                 </button>
             </DialogTrigger>
             <div className="mt-4">
-                <h4 className="font-semibold text-lg text-foreground mb-2">{item.title}</h4>
-                <div className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                <h4 className="font-semibold text-xl text-foreground mb-2">{item.title}</h4>
+                <div className="text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">
                     <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
-                            p: ({ children }) => <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">{children}</p>,
-                            li: ({ children }) => <li className="ml-4 list-disc text-sm text-muted-foreground leading-relaxed">{children}</li>,
+                            p: ({ children }) => <p className="text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">{children}</p>,
+                            li: ({ children }) => <li className="ml-4 list-disc text-base text-muted-foreground leading-relaxed">{children}</li>,
                         }}
                     >
                         {item.description}
                     </ReactMarkdown>
                 </div>
             </div>
-            <DialogContent className="grid h-[95vh] w-[95vw] max-w-[95vw] grid-rows-[1fr_auto] gap-0 overflow-hidden p-0 sm:max-w-[95vw]">
-                <div className="relative min-h-0 bg-background/90">
+            <DialogContent className="flex max-h-[94vh] w-fit max-w-[94vw] flex-col overflow-hidden p-0 sm:max-w-[94vw]">
+                <div className="flex min-h-0 max-h-[calc(94vh-5rem)] max-w-[94vw] items-center justify-center bg-background/90">
                     {!hasError ? (
-                        <Image
+                        <img
                             src={item.image}
                             alt={item.title || `${projectTitle} 갤러리 이미지`}
-                            fill
-                            sizes="95vw"
-                            className="object-contain"
+                            className="h-auto max-h-[calc(94vh-5rem)] w-auto max-w-[94vw] object-contain"
                             draggable={false}
                             onError={() => setHasError(true)}
                         />
@@ -476,7 +475,7 @@ const GalleryItemModal = ({ item, projectTitle }: { item: GalleryItem; projectTi
                         <div className="flex h-full w-full flex-col items-center justify-center gap-3 bg-muted/70 text-muted-foreground">
                             <ImageIcon size={72} className="opacity-70" />
                             <p className="text-lg font-semibold">이미지를 불러올 수 없습니다.</p>
-                            <p className="text-sm text-muted-foreground/80">네트워크 오류 또는 경로 문제일 수 있습니다.</p>
+                            <p className="text-base text-muted-foreground/80">네트워크 오류 또는 경로 문제일 수 있습니다.</p>
                         </div>
                     )}
                 </div>
@@ -522,12 +521,12 @@ const JungJiseop = () => {
                 <div className="mb-12">
                     <div className="inline-flex items-center gap-2 mb-4">
                         <div className="h-1 w-8 bg-linear-to-r from-primary to-accent rounded-full"></div>
-                        <span className="text-sm font-semibold text-primary uppercase tracking-wider">포트폴리오</span>
+                        <span className="text-base font-semibold text-primary uppercase tracking-wider">포트폴리오</span>
                     </div>
                     <h1 className="text-4xl md:text-5xl font-bold bg-linear-to-r from-primary via-accent to-primary bg-clip-text text-transparent mb-4">
                         정지섭의 프로젝트
                     </h1>
-                    <p className="text-lg text-muted-foreground max-w-2xl">
+                    <p className="text-xl text-muted-foreground max-w-2xl">
                         여러 프로젝트의 경험과 역량을 소개합니다
                     </p>
                 </div>
@@ -541,7 +540,7 @@ const JungJiseop = () => {
                                 <TabsTrigger
                                     key={project.id}
                                     value={project.id}
-                                    className="bg-muted hover:bg-muted/80 data-[state=active]:bg-linear-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground text-foreground rounded-lg px-4 py-2.5 transition-all duration-200 border-0 text-sm font-medium"
+                                    className="bg-muted hover:bg-muted/80 data-[state=active]:bg-linear-to-r data-[state=active]:from-primary data-[state=active]:to-accent data-[state=active]:text-primary-foreground text-foreground rounded-lg px-4 py-2.5 transition-all duration-200 border-0 text-base font-medium"
                                 >
                                     {project.tab}
                                 </TabsTrigger>
@@ -552,7 +551,7 @@ const JungJiseop = () => {
                     {/* Tabs Content */}
                     {projects.map((project, projectIndex) => (
                         <TabsContent key={project.id} value={project.id} className="mt-0">
-                            <Card className="border-border/50 overflow-hidden hover:shadow-lg transition-all duration-300 backdrop-blur-sm bg-card/50">
+                            <Card className="border-border/50 overflow-hidden transition-all duration-300 backdrop-blur-sm bg-card/50">
                                 <div className="flex flex-col gap-8 p-8 md:p-10">
                                     {/* Image Section */}
                                     <div className="w-full">
@@ -563,10 +562,10 @@ const JungJiseop = () => {
                                     <div className="flex flex-col gap-8">
                                         {/* Title & Description */}
                                         <div className="border-b border-border/50 pb-6">
-                                            <h2 className="text-4xl font-bold mb-3">
+                                            <h2 className="text-4xl md:text-5xl font-bold mb-3">
                                                 {project.title}
                                             </h2>
-                                            <p className="text-accent font-medium text-base leading-relaxed mb-4">
+                                            <p className="text-accent font-medium text-lg leading-relaxed mb-4">
                                                 {project.description}
                                             </p>
 
@@ -577,7 +576,7 @@ const JungJiseop = () => {
                                                         href={project.github}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
+                                                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground rounded-lg transition-all duration-200 font-semibold text-base shadow-md hover:shadow-lg hover:scale-105"
                                                     >
                                                         <Github size={18} strokeWidth={2.5} />
                                                         GitHub
@@ -588,7 +587,7 @@ const JungJiseop = () => {
                                                         href={project.deploy}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
+                                                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-base shadow-md hover:shadow-lg hover:scale-105"
                                                     >
                                                         <ExternalLink size={18} strokeWidth={2.5} />
                                                         배포 사이트
@@ -603,9 +602,9 @@ const JungJiseop = () => {
                                             <div className="p-4 bg-linear-to-br from-primary/15 to-primary/5 border border-primary/30 rounded-lg">
                                                 <div className="flex items-center gap-2 mb-2">
                                                     <Target size={18} style={{ color: 'var(--icon-primary)' }} />
-                                                    <h3 className="text-xs font-bold text-primary uppercase tracking-widest">역할</h3>
+                                                    <h3 className="text-sm font-bold text-primary uppercase tracking-widest">역할</h3>
                                                 </div>
-                                                <p className="text-base font-semibold text-foreground">{project.role}</p>
+                                                <p className="text-lg font-semibold text-foreground">{project.role}</p>
                                             </div>
                                         </div>
 
@@ -613,7 +612,7 @@ const JungJiseop = () => {
                                         <div>
                                             <div className="flex items-center gap-2 mb-4 pb-3 border-b-2 border-primary/30">
                                                 <Building2 size={20} style={{ color: 'var(--icon-secondary)' }} />
-                                                <h3 className="text-lg font-bold">아키텍처</h3>
+                                                <h3 className="text-xl font-bold">아키텍처</h3>
                                             </div>
                                             <div className="space-y-3">
                                                 {project.architecture.map((arch, idx) => {
@@ -621,15 +620,15 @@ const JungJiseop = () => {
                                                     return (
                                                         <div
                                                             key={idx}
-                                                            className="p-4 bg-muted/40 border border-border/50 rounded-lg hover:border-primary/50 transition-all hover:bg-muted/60"
+                                                            className="p-4 bg-muted/40 border border-border/50 rounded-lg transition-all"
                                                         >
                                                             <div className="flex items-start gap-4">
                                                                 <div className="shrink-0">
-                                                                    <span className="inline-block px-3 py-1 bg-linear-to-r from-primary/30 to-accent/30 text-primary font-bold text-sm rounded-md border border-primary/30">
+                                                                    <span className="inline-block px-3 py-1 bg-linear-to-r from-primary/30 to-accent/30 text-primary font-bold text-base rounded-md border border-primary/30">
                                                                         {key}
                                                                     </span>
                                                                 </div>
-                                                                <p className="text-sm text-muted-foreground leading-relaxed flex-1 pt-1">{value}</p>
+                                                                <p className="text-base text-muted-foreground leading-relaxed flex-1 pt-1">{value}</p>
                                                             </div>
                                                         </div>
                                                     );
@@ -641,13 +640,13 @@ const JungJiseop = () => {
                                         <div>
                                             <div className="flex items-center gap-2 mb-4 pb-3 border-b-2 border-primary/30">
                                                 <Sparkles size={20} style={{ color: 'var(--icon-accent)' }} />
-                                                <h3 className="text-lg font-bold">주요 기능</h3>
+                                                <h3 className="text-xl font-bold">주요 기능</h3>
                                             </div>
                                             <div className="flex flex-wrap gap-2">
                                                 {project.features.map((feature, idx) => (
                                                     <Badge
                                                         key={idx}
-                                                        className="bg-gradient-to-r from-primary/25 to-accent/25 text-primary hover:from-primary/40 hover:to-accent/40 border border-primary/40 transition-all text-xs font-medium px-3 py-1"
+                                                        className="bg-gradient-to-r from-primary/25 to-accent/25 text-primary border border-primary/40 transition-all text-sm font-medium px-3 py-1"
                                                     >
                                                         {feature}
                                                     </Badge>
@@ -659,13 +658,13 @@ const JungJiseop = () => {
                                         <div>
                                             <div className="flex items-center gap-2 mb-4 pb-3 border-b-2 border-accent/30">
                                                 <Briefcase size={20} style={{ color: 'var(--icon-accent-secondary)' }} />
-                                                <h3 className="text-lg font-bold">담당 역할</h3>
+                                                <h3 className="text-xl font-bold">담당 역할</h3>
                                             </div>
                                             <div className="space-y-2">
                                                 {project.contribution.map((contrib, idx) => (
-                                                    <div key={idx} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                                                    <div key={idx} className="flex items-start gap-3 p-3 bg-muted/30 rounded-lg transition-colors">
                                                         <CheckCircle2 size={18} style={{ color: 'var(--icon-accent-secondary)' }} className="mt-0.5 shrink-0" />
-                                                        <span className="text-sm text-muted-foreground leading-relaxed">{contrib}</span>
+                                                        <span className="text-base text-muted-foreground leading-relaxed">{contrib}</span>
                                                     </div>
                                                 ))}
                                             </div>
@@ -675,9 +674,9 @@ const JungJiseop = () => {
                                         <div className="p-6 bg-linear-to-r from-primary/5 via-accent/5 to-primary/5 rounded-xl border border-border/50">
                                             <div className="flex items-center gap-2 mb-4">
                                                 <FileText size={20} style={{ color: 'var(--icon-secondary)' }} />
-                                                <h3 className="text-lg font-bold">프로젝트 상세</h3>
+                                                <h3 className="text-xl font-bold">프로젝트 상세</h3>
                                             </div>
-                                            <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                                            <p className="text-base text-muted-foreground leading-relaxed whitespace-pre-wrap">
                                                 {project.details}
                                             </p>
                                         </div>
@@ -688,7 +687,7 @@ const JungJiseop = () => {
                                                 href={project.deploy}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
+                                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-base shadow-md hover:shadow-lg hover:scale-105"
                                             >
                                                 <ExternalLink size={18} strokeWidth={2.5} />
                                                 배포 사이트 들어가보기!!
@@ -698,7 +697,7 @@ const JungJiseop = () => {
                                             <div>
                                                 <div className="flex items-center gap-2 mb-6 pb-4 border-b-2 border-primary/30">
                                                     <ImageIcon size={20} style={{ color: 'var(--icon-secondary)' }} />
-                                                    <h3 className="text-lg font-bold">프로젝트 갤러리</h3>
+                                                    <h3 className="text-xl font-bold">프로젝트 갤러리</h3>
                                                 </div>
                                                 <div className="space-y-8">
                                                     {project.gallery.map((item, idx) => (
@@ -711,24 +710,38 @@ const JungJiseop = () => {
                                                 </div>
                                             </div>
                                         )}
-                                        {project.deploy && (
-                                            <a
-                                                href={project.deploy}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/80 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
-                                            >
-                                                <ExternalLink size={18} strokeWidth={2.5} />
-                                                직접 체험해보세요!
-                                            </a>
-                                        )}
-                                        <button
-                                            type="button"
-                                            onClick={() => handleNextProjectClick(projectIndex)}
-                                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-accent to-accent/10 hover:from-accent/90 hover:to-accent/70 text-accent-foreground rounded-lg transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg hover:scale-105"
-                                        >
-                                            {projectIndex === projects.length - 1 ? '처음 프로젝트로 돌아가기' : '다음 프로젝트 보러가기'}
-                                        </button>
+                                        <div className="rounded-xl border border-primary/20 bg-linear-to-r from-primary/10 via-background to-accent/10 p-4 shadow-lg shadow-primary/10">
+                                            <div className={`grid gap-3 ${project.deploy ? 'md:grid-cols-[1fr_1.25fr]' : ''}`}>
+                                                {project.deploy && (
+                                                    <a
+                                                        href={project.deploy}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="group inline-flex min-h-14 items-center justify-center gap-2 rounded-lg border border-foreground/15 bg-foreground px-6 py-3 text-base font-bold text-background shadow-md shadow-foreground/20 transition-all duration-200 hover:-translate-y-0.5 hover:bg-foreground/90 hover:shadow-xl"
+                                                    >
+                                                        <ExternalLink size={19} strokeWidth={2.5} className="transition-transform group-hover:scale-110" />
+                                                        웹사이트 들어가보기
+                                                    </a>
+                                                )}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleNextProjectClick(projectIndex)}
+                                                    className="group inline-flex min-h-14 items-center justify-center gap-2 rounded-lg bg-linear-to-r from-primary via-accent to-primary px-6 py-3 text-base font-bold text-primary-foreground shadow-lg shadow-primary/30 ring-2 ring-primary/25 transition-all duration-200 hover:-translate-y-0.5 hover:from-primary/90 hover:via-accent/90 hover:to-primary/90 hover:shadow-xl hover:shadow-primary/40"
+                                                >
+                                                    {projectIndex === projects.length - 1 ? (
+                                                        <>
+                                                            <RotateCcw size={19} strokeWidth={2.5} className="transition-transform group-hover:-rotate-45" />
+                                                            처음 프로젝트로 돌아가기
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            다음 프로젝트 보러가기
+                                                            <ArrowRight size={20} strokeWidth={2.5} className="transition-transform group-hover:translate-x-1" />
+                                                        </>
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </Card>
@@ -740,8 +753,8 @@ const JungJiseop = () => {
                 {/* Projects Count */}
 
                 <div className="mt-12 pt-8 border-t border-border/50 text-center">
-                    <p className="text-muted-foreground text-sm">
-                        총 <span className="text-primary font-bold text-base">{projects.length}</span>개의 프로젝트
+                    <p className="text-muted-foreground text-base">
+                        총 <span className="text-primary font-bold text-lg">{projects.length}</span>개의 프로젝트
                     </p>
                 </div>
             </div>
