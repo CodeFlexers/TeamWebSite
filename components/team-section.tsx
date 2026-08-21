@@ -56,6 +56,15 @@ const teamMembers = [
     gradient: "from-[var(--mint)] to-[var(--green-300)]",
     avatar: "YH",
   },
+  {
+    id: "song-mingyu",
+    name: "송민규",
+    role: "Frontend, Backend, Deploy, AI Agent",
+    bio: "분야를 가리지 않고 다양한 기술을 배우고 적용하는 것을 즐기는 개발자입니다.",
+    skills: ["React", "Next.js", "zustand", "tanstack-query", "SpringBoot", "Codex", "Claude", "Harness"],
+    gradient: "from-[var(--mint)] to-[var(--green-300)]",
+    avatar: "MG",
+  },
 ];
 
 const containerVariants = {
