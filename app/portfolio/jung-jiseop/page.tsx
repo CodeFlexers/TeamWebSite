@@ -22,9 +22,88 @@ import { Target, Building2, Sparkles, Briefcase, FileText, Image as ImageIcon, C
 
 const projects: Project[] = [
     {
+        id: 'project-4',
+        tab: '코딩 에이전트 프로젝트',
+        title: 'Codex를 이용하여 만든 게시판 Posty',
+        description: '코딩 에이전트 활용 능력을 올리기 위해 프로젝트 설계부터 완성까지 Codex와 함께 개발한 React 19와 FastAPI 기반 풀스택 커뮤니티 게시판 프로젝트입니다.',
+        role: '설계, 작업지시, 검토',
+
+        architecture: [
+            'React + TS + Vite: 사용자 인터페이스',
+            'FastAPI: 인증, 인가, CRUD',
+            'MariaDB: 사용자 정보 및 관련 데이터 저장',
+            'Raspberry Pi: 서비스 배포 환경',
+        ],
+
+        features: [
+            "JWT HttpOnly 쿠키, Refresh Token 회전, CSRF 검증 기반 인증 구성",
+            "리치 텍스트 게시글 작성과 서버 HTML 정제",
+            "게시글 본문 이미지와 일반 첨부파일 업로드·삭제 처리",
+            "카테고리, 제목 검색, 작성자 필터, 정렬, 페이지네이션 제공",
+            "댓글, 1단계 대댓글, 좋아요와 작성자·관리자 권한 제어",
+            'FastAPI router-service-repository 계층과 SQLAlchemy async 구성',
+            'Alembic 마이그레이션, 재실행 가능한 schema.sql·seed.sql 관리',
+            'React 반응형 UI, 접근 가능한 Modal과 역할 기반 라우팅 구성',
+            'pytest, Vitest, ESLint, TypeScript와 MySQL 실DB 기반 검증 자동화',
+        ],
+
+        contribution: [
+            'AGENTS.md에 기술 스택, 문서 동기화, DB 안전 수칙과 검증 기준을 정의',
+            'SKILL.md를 생성하여 백엔드, GitHub 전문 스킬을 작업 성격에 맞게 적용',
+            "UI/UX 디자인 전용 스킬 impeccable 적용",
+            "하위 폴더 AGENTS.md에 frontend, backend 별 코딩 규칙 정의",
+            '기능 요구사항을 에이전트와 반복적으로 구체화하고 제안서를 받은 후 사용자 승인 후에만 구현하는 설계·컨펌 구조 운영',
+            '에이전트가 ./docs 폴더내에 문서를 생성하여 API문서, 요구사항 명세 등 계약을 철처히 하여 설계 문서를 바탕으로 그대로 구현',
+            'API 테스트 자동화 구현 모든 기능 구현마다 테스트 자동화',
+            'OpenAPI 경로, 문서 상대 링크, Git diff, ESLint, TypeScript 빌드와 테스트 결과로 에이전트 검증',
+        ],
+
+        details: `
+이 프로젝트는 코딩 에이전트 활용 역량을 높이기 위해 기획과 설계부터 구현, 검증, 장애 분석까지 Codex와 협업하여 개발한 풀스택 커뮤니티 게시판입니다. 단순히 코드를 생성하는 방식이 아니라, 사용자가 제품 방향과 요구사항을 결정하고 에이전트가 설계안·영향 범위·검증 결과를 보고하면 이를 검토하고 승인하는 구조로 진행했습니다.
+
+1. 에이전트 중심 개발 프로세스
+
+저장소의 AGENTS.md에 기술 스택, 계층별 책임, 문서 동기화 규칙, 데이터베이스 안전 수칙과 완료 기준을 정의했습니다. 이를 통해 에이전트가 매 작업마다 동일한 개발 원칙을 따르고, 기존 코드나 사용자의 작업 내용을 임의로 훼손하지 않도록 통제했습니다.
+
+백엔드와 UI·UX처럼 전문적인 판단이 필요한 작업에는 목적에 맞는 SKILL.md를 적용했습니다. 기능을 바로 구현하도록 지시하지 않고 요구사항 분석, 설계 제안서 작성, 사용자 검토와 승인, 구현, 자동 검증 순서로 작업을 분리했습니다.
+
+2. 문서 기반 설계와 구현
+
+backend/docs를 구현 계약으로 사용하여 REST API, 데이터베이스 테이블과 인덱스, 인증·보안 정책, 트랜잭션 범위와 운영 기준을 문서화했습니다. API가 변경되면 관련 문서와 OpenAPI, SQLAlchemy 모델, Alembic 마이그레이션, schema.sql과 seed.sql이 함께 변경되도록 에이전트의 작업 범위를 지정했습니다.
+
+백엔드는 FastAPI의 router-service-repository 구조로 구성했습니다. Router는 HTTP 입출력, Service는 권한과 유스케이스 및 트랜잭션, Repository는 SQLAlchemy 비동기 데이터 접근을 담당하도록 역할을 분리했습니다. 프론트엔드는 React 19와 TypeScript를 기반으로 페이지, 도메인 기능, API 클라이언트, 공통 UI를 분리했습니다.
+
+3. 주요 기능
+
+JWT HttpOnly 쿠키와 회전식 Refresh Token, CSRF 검증을 적용해 브라우저 인증을 구현했습니다. 게시글은 리치 텍스트 편집을 지원하지만 서버에서 허용 목록 기반으로 HTML을 정제한 결과만 저장하고 출력하도록 구성했습니다. 본문 이미지와 일반 첨부파일은 별도의 API와 저장 정책으로 관리했습니다.
+
+게시글 검색·필터·정렬·페이지네이션, 댓글과 1단계 대댓글, 좋아요, 작성자·관리자 권한 제어를 구현했습니다.
+
+3. 에이전트를 활용한 품질 검증
+
+기능 구현 후 에이전트가 pytest와 Vitest 테스트, ESLint, TypeScript 검사와 Vite 프로덕션 빌드를 실행하도록 했습니다. OpenAPI 경로와 설계 문서의 일치 여부, Markdown 상대 링크, Git diff 오류도 함께 검사했습니다.
+
+데이터베이스 변경은 테스트 코드만 통과하는 것으로 끝내지 않았습니다. 별도의 빈 MySQL 스키마를 생성해 Alembic 전체 마이그레이션을 처음부터 적용하고, schema.sql 실행과 seed.sql 반복 실행 결과까지 확인했습니다. 검증에 사용한 임시 데이터베이스는 대상 이름을 명확히 확인한 후 제거하도록 해 실제 개발 데이터를 보호했습니다.
+
+
+이 프로젝트를 통해 코딩 에이전트의 결과 품질은 프롬프트의 길이보다 명확한 작업 규칙, 문서화된 계약, 단계별 승인, 자동화된 완료 기준과 사용자의 지속적인 검토에 의해 결정된다는 점을 학습했습니다. 사용자는 제품 결정과 작업 지시 및 최종 검토를 담당하고, Codex는 설계 대안 제시, 구현, 테스트와 반복 검증을 수행하는 협업 구조를 구축했습니다.
+`,
+
+        github: 'https://github.com/Seopia/Board',
+        deploy: 'https://board.seopia.co.kr',
+
+        gallery: [
+            {
+                image: '.',
+                title: '업데이트 중입니다.',
+                description: '곧 사진을 추가할게요,,'
+            },
+        ]
+    },
+    {
         id: 'project-1',
-        tab: 'AI 정신감정 챗봇',
-        title: 'AI 챗봇 사용자 정신감정 분석 멘탈케어 플랫폼',
+        tab: 'RAG 프로젝트',
+        title: 'LLM 챗봇 사용자 정신감정 분석 멘탈케어 플랫폼',
         description: '사용자와의 일상 대화를 기반으로 감정 상태를 분석하고, 하루 감정 기록과 요약을 제공하는 AI 멘탈케어 플랫폼입니다.',
         role: '아키텍쳐 설계, 백앤드 개발 (팀장)',
         architecture: [
@@ -37,10 +116,11 @@ const projects: Project[] = [
         ],
         features: [ //주요 기능
             'AI 챗봇 실시간 대화',
+            '이전 대화 기록 기반 RAG 응답',
+            '전문지식 필요시 RAG 응답',
             '대화 기반 감정 분석',
             '하루 단위 대화 요약 및 일기 생성',
             '감정 캘린더 시각화',
-            '이전 대화 기록 기반 RAG 응답',
             '사용자 인증 및 대화방 관리',
             '스트리밍 응답 처리',
         ],
@@ -104,8 +184,8 @@ const projects: Project[] = [
     },
     {
         id: 'project-2',
-        tab: '파일 클라우드 서비스',
-        title: 'Seopia Cloud',
+        tab: '파일 클라우드 프로젝트',
+        title: '파일 공유 웹사이트 Seopia Cloud',
         description: '개인 클라우드, 공용 클라우드, 그룹 클라우드, 관리자 페이지를 제공하며 사용자 권한에 따라 파일 업로드, 공유, 관리 기능을 분리한 웹 기반 클라우드 스토리지 서비스입니다. 프론트앤드는 AI를 적극 활용했습니다.',
         role: '개인 프로젝트',
         architecture: [
@@ -202,7 +282,7 @@ const projects: Project[] = [
     },
     {
         id: 'project-3',
-        tab: 'YOLO 모델 최적화',
+        tab: 'YOLO HailoSDK 최적화',
         title: 'YOLO 기반 재활용품 분류 모델',
         description: 'AI Hub 재활용품 분류 및 선별 데이터를 YOLO 학습 형식으로 변환하고, 금속캔·페트병·플라스틱·스티로폼 4개 클래스를 탐지하는 객체 탐지 모델을 학습한 프로젝트입니다. 학습 결과를 MLflow로 관리하고, ONNX 변환 및 Hailo-8 NPU용 HEF 컴파일 스크립트를 구성해 엣지 디바이스에 배포하였습니다.',
         role: 'AI 모델 학습·데이터 전처리·모델 변환',
@@ -273,8 +353,6 @@ AI Hub의 재활용품 분류 및 선별 데이터를 YOLO 객체 탐지 모델 
 추론은 test_refactored.py와 YOLOPredictor 클래스를 통해 수행됩니다. 모델 경로, 입력 이미지 또는 폴더, 이미지 크기, confidence threshold, IoU threshold, device를 CLI 인자로 지정할 수 있으며, 탐지 결과를 저장하고 클래스별 탐지 개수를 요약해 출력합니다.
 
 엣지 배포를 위해 학습된 best.pt 모델을 ONNX로 변환하는 스크립트를 구성했고, Hailo SDK의 ClientRunner를 사용해 ONNX 모델을 Hailo-8용 HEF로 컴파일하기 위한 스크립트도 작성했습니다. 이 과정에서 calibration_data.py로 640x640 크기의 calibration numpy 데이터를 생성하고, onnx_to_hef.py에서 translate_onnx_model, optimize, compile 단계를 수행하도록 구성했습니다.
-
-현재 저장소에서 확인되는 최종 학습 산출물은 runs/detect/trash_train5/weights/best.pt, last.pt, best.onnx이며, HEF 파일 자체는 저장소에서 확인되지 않습니다. 따라서 이 프로젝트의 정확한 범위는 YOLO 학습·추론 파이프라인 구축, MLflow 기반 실험 관리, ONNX 변환, Hailo-8 NPU 배포를 위한 변환 스크립트 구성입니다.
   `,
 
         github: '',
@@ -286,12 +364,12 @@ AI Hub의 재활용품 분류 및 선별 데이터를 YOLO 객체 탐지 모델 
                 description: 'AI Hub 재활용품 분류 및 선별 데이터의 이미지와 JSON 어노테이션을 YOLO 학습 데이터로 사용했습니다.'
             },
             {
-                image: '/jung-jiseop/yolo-converter.png',
+                image: '/jung-jiseop/yolo-dataset2.png',
                 title: 'JSON to YOLO 라벨 변환',
                 description: 'IMAGE_INFO와 ANNOTATION_INFO를 파싱해 객체 클래스와 좌표를 추출하고 YOLO 라벨 형식으로 변환했습니다.'
             },
             {
-                image: '/jung-jiseop/yolo-label-visualization.png',
+                image: '/jung-jiseop/yolo-boundingbox.png',
                 title: 'Bounding Box 변환',
                 description: 'BOX 계열 어노테이션과 POLYGON 어노테이션을 Bounding Box로 변환하고 이미지 크기 기준으로 정규화했습니다.'
             },
@@ -321,7 +399,8 @@ AI Hub의 재활용품 분류 및 선별 데이터를 YOLO 객체 탐지 모델 
                 description: 'Calibration 데이터를 사용해 ONNX 모델을 Hailo SDK에서 최적화하고 HEF로 컴파일하기 위한 스크립트를 구성했습니다.'
             }
         ]
-    }
+    },
+        
 
 ]
 
@@ -658,7 +737,7 @@ const JungJiseop = () => {
                                         <div>
                                             <div className="flex items-center gap-2 mb-4 pb-3 border-b-2 border-accent/30">
                                                 <Briefcase size={20} style={{ color: 'var(--icon-accent-secondary)' }} />
-                                                <h3 className="text-xl font-bold">담당 역할</h3>
+                                                <h3 className="text-xl font-bold">{project.id==="project-4" ? "요약" : "담당 역할"}</h3>
                                             </div>
                                             <div className="space-y-2">
                                                 {project.contribution.map((contrib, idx) => (
