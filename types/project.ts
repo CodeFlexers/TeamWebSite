@@ -10,6 +10,7 @@ export interface Project {
     contribution: string[]
     github?: string
     deploy?: string
+    notion?:string
     gallery?: Array<{
         image: string
         title: string
